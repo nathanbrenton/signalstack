@@ -1,0 +1,15 @@
+services:
+    db:
+        image: postgres:16
+        container_name: signalstack_db
+        environment:
+            POSTGRES_DB: signalstack
+            POSTGRES_USER: signalstack_user
+            POSTGRES_PASSWORD: signalstack_password
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
