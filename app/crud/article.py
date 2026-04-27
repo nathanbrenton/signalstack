@@ -1,0 +1,16 @@
+from sqlalchemy.orm import Session
+
+from app.models.article import Article
+from app.schemas.article import ArticleCreate
+
+
+def create_article(db: Session, article: ArticleCreate) -> Article:
+    db_article = Article(**article.model_dump())
+    db.add(db_article)
+    db.commit()
+    db.refresh(db_article)
+    return db_article
+
+
+def get_articles(db: Session) -> list[Article]:
+    return db.query(Article).all()

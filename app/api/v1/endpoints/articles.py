@@ -1,17 +1,18 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.db.deps import get_db
+from app.crud.article import create_article, get_articles
+from app.schemas.article import ArticleCreate, ArticleRead
 
 router = APIRouter()
 
 
-@router.get("/articles")
-def list_articles():
-    return {
-        "articles": [
-            {
-                "id": 1,
-                "title": "SignalStack first mock article",
-                "source": "Example RSS",
-                "url": "https://example.com/article-1",
-            }
-        ]
-    }
+@router.post("/articles", response_model=ArticleRead)
+def create(article: ArticleCreate, db: Session = Depends(get_db)):
+    return create_article(db, article)
+
+
+@router.get("/articles", response_model=list[ArticleRead])
+def list_all(db: Session = Depends(get_db)):
+    return get_articles(db)
