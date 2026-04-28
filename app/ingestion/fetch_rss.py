@@ -12,6 +12,7 @@ def main():
 
     try:
         feed = feedparser.parse(RSS_URL)
+        source_name = feed.feed.get("title")
 
         print(f"Feed title: {feed.feed.get('title')}")
         print(f"Entries found: {len(feed.entries)}")
@@ -30,6 +31,7 @@ def main():
                 published_at = datetime(*published_parsed[:6])
 
             print(f"Published at: {published_at}")
+            print(f"Source: {source_name}")
 
 
             if not title or not url:
@@ -48,6 +50,7 @@ def main():
                 title=title,
                 url=url,
                 published_at=published_at,
+                source_name=source_name,
             )
 
             db.add(article)

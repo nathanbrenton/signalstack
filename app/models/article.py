@@ -14,4 +14,4 @@ class Article(Base):
     content = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     published_at = Column(DateTime, nullable=True)
-
+    source_name = Column(String, nullable=True)
