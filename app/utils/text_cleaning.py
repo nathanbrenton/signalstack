@@ -11,7 +11,9 @@ def clean_html_summary(raw_summary: str | None) -> str | None:
     text = sub(r"\s+", " ", text)
 
     text = text.strip()
+    text = text.lower() # NLP prep: normalize case
 
-    # NLP prep: normalize case
-    text = text.lower()
+    # Remove excess punctuation (keep .,!? for now)
+    text = sub(r"[^\w\s\.\,\!\?]", "", text)
+
     return text
