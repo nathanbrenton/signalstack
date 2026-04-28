@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.db.session import SessionLocal
 from app.models.article import Article
 import feedparser
@@ -15,9 +16,25 @@ def main():
         print(f"Feed title: {feed.feed.get('title')}")
         print(f"Entries found: {len(feed.entries)}")
 
-        for entry in feed.entries[:5]: # ONLY 1 for now
+        for entry in feed.entries[:5]: # change number here to test (e.g. 1)
             title = entry.get("title")
             url = entry.get("link")
+
+#            print(entry.keys())
+#            published = entry.get("published")
+#            print(f"Published: {published}")
+            published_parsed = entry.get("published_parsed")
+
+            published_at = None
+            if published_parsed:
+                published_at = datetime(*published_parsed[:6])
+
+            print(f"Published at: {published_at}")
+
+
+            if not title or not url:
+                print("Skipping invalid entry")
+                continue
 
             existing_article = db.query(Article).filter(Article.url == url).first()
 
@@ -29,7 +46,8 @@ def main():
 
             article = Article(
                 title=title,
-                url=url
+                url=url,
+                published_at=published_at,
             )
 
             db.add(article)
