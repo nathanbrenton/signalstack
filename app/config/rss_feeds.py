@@ -1,3 +1,5 @@
+INGEST_LIMIT = 5
+
 RSS_FEEDS = [
     "https://nathanbrenton.com/rss.xml",
     "https://feeds.bbci.co.uk/news/world/rss.xml",

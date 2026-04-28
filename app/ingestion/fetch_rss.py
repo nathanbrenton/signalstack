@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.config.rss_feeds import RSS_FEEDS
+from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
 import feedparser
@@ -22,7 +22,7 @@ def ingest_feed(db, rss_url):
     print(f"Feed title: {source_name}")
     print(f"Entries found: {len(feed.entries)}")
 
-    for entry in feed.entries[:5]:
+    for entry in feed.entries[:INGEST_LIMIT]:
         title = entry.get("title")
         url = entry.get("link")
 
