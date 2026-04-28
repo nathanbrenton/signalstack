@@ -15,3 +15,4 @@ class Article(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     published_at = Column(DateTime, nullable=True)
     source_name = Column(String, nullable=True)
+    summary = Column(String, nullable=True)
