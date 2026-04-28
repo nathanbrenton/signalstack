@@ -1,14 +1,15 @@
 from datetime import datetime
+from app.config.rss_feeds import RSS_FEEDS
 from app.db.session import SessionLocal
 from app.models.article import Article
 import feedparser
 
 
 #RSS_URL = "https://feeds.bbci.co.uk/news/world/rss.xml"
-RSS_FEEDS = [
-    "https://feeds.bbci.co.uk/news/world/rss.xml",
-    "https://www.aljazeera.com/xml/rss/all.xml",
-]
+#RSS_FEEDS = [
+#    "https://feeds.bbci.co.uk/news/world/rss.xml",
+#    "https://www.aljazeera.com/xml/rss/all.xml",
+#]
 
 
 def ingest_feed(db, rss_url):
