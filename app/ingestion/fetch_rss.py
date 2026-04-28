@@ -14,6 +14,9 @@ import feedparser
 
 def ingest_feed(db, rss_url):
     feed = feedparser.parse(rss_url)
+    if feed.bozo:
+        raise Exception(f"Malformed feed or parse error: {feed.bozo_exception}")
+
     source_name = feed.feed.get("title")
 
     print(f"Feed title: {source_name}")
@@ -64,7 +67,12 @@ def main():
         for rss_url in RSS_FEEDS:
             print()
             print(f"Processing feed: {rss_url}")
-            ingest_feed(db, rss_url)
+
+            try:
+                ingest_feed(db, rss_url)
+            except Exception as exc:
+                print(f"Error processing feed: {rss_url}")
+                print(f"Reason: {exc}")
 
     finally:
         db.close()
