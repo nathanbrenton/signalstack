@@ -26,7 +26,10 @@ def ingest_feed(db, rss_url):
     for entry in feed.entries[:INGEST_LIMIT]:
         title = entry.get("title")
         url = entry.get("link")
-        summary = clean_html_summary(entry.get("summary"))
+#        summary = clean_html_summary(entry.get("summary"))
+        raw_summary = entry.get("summary")
+        clean_summary = clean_html_summary(raw_summary)
+
 
         if not title or not url:
             print("Skipping invalid entry")
@@ -40,7 +43,7 @@ def ingest_feed(db, rss_url):
 
         print(f"Published at: {published_at}")
         print(f"Source: {source_name}")
-        print(f"Summary: {summary[:100] if summary else None}") # for debugging only
+        print(f"Clean summary: {clean_summary[:100] if clean_summary else None}") # for debugging only
 
         existing_article = db.query(Article).filter(Article.url == url).first()
 
@@ -53,7 +56,8 @@ def ingest_feed(db, rss_url):
         article = Article(
             title=title,
             url=url,
-            summary=summary,
+            summary=raw_summary,
+            clean_summary=clean_summary,
             published_at=published_at,
             source_name=source_name,
         )

@@ -6,6 +6,7 @@ class ArticleBase(BaseModel):
     title: str
     url: str
     summary: str | None = None
+    clean_summary: str | None = None
     published_at: datetime | None = None
     source_name: str | None = None
 #    source: str | None = None
