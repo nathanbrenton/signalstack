@@ -2,6 +2,7 @@ from datetime import datetime
 from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
+from app.utils.text_cleaning import clean_html_summary
 import feedparser
 
 
@@ -25,7 +26,7 @@ def ingest_feed(db, rss_url):
     for entry in feed.entries[:INGEST_LIMIT]:
         title = entry.get("title")
         url = entry.get("link")
-        summary = entry.get("summary")
+        summary = clean_html_summary(entry.get("summary"))
 
         if not title or not url:
             print("Skipping invalid entry")
