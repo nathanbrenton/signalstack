@@ -12,6 +12,7 @@ class Article(Base):
     url = Column(String, unique=True, nullable=False, index=True)
     summary = Column(String, nullable=True)
     clean_summary = Column(String, nullable=True)
+    keywords = Column(String, nullable=True)
     published_at = Column(DateTime, nullable=True)
     source_name = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
