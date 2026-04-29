@@ -9,8 +9,10 @@ class Article(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
+    normalized_title = Column(String, nullable=True)
     url = Column(String, unique=True, nullable=False, index=True)
     summary = Column(String, nullable=True)
+    summary_hash = Column(String, nullable=True)
     clean_summary = Column(String, nullable=True)
     keywords = Column(String, nullable=True)
     published_at = Column(DateTime, nullable=True)
