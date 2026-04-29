@@ -1,6 +1,7 @@
 from collections import Counter
 from html import unescape
 from re import sub
+from hashlib import sha256
 
 STOPWORDS = {
     "a",
@@ -76,3 +77,20 @@ def detect_language(text: str | None) -> str:
     ratio = stopword_hits / len(words)
 
     return "en" if ratio > 0.1 else "unknown"
+
+def normalize_title(title: str | None) -> str:
+    if not title:
+        return ""
+
+    text = title.lower()
+    text = sub(r"[^\w\s]", "", text)
+    text = sub(r"\s+", " ", text)
+
+    return text.strip()
+
+
+def create_summary_hash(clean_summary: str | None) -> str | None:
+    if not clean_summary:
+        return None
+
+    return sha256(clean_summary.encode("utf-8")).hexdigest()

@@ -1,4 +1,4 @@
-from app.utils.text_cleaning import clean_html_summary, extract_keywords, detect_language
+from app.utils.text_cleaning import clean_html_summary, create_summary_hash, extract_keywords, detect_language
 
 
 sample = "&lt;p&gt;Hello &amp;amp; welcome&lt;/p&gt;"
@@ -17,4 +17,4 @@ print(clean_html_summary(sample))
 print(detect_language("This is a test article with several English words."))
 
 
-
+print(create_summary_hash("example cleaned summary"))

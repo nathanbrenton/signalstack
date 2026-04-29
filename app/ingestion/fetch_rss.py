@@ -2,7 +2,13 @@ from datetime import datetime
 from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
-from app.utils.text_cleaning import clean_html_summary, detect_language, extract_keywords
+from app.utils.text_cleaning import (
+    clean_html_summary,
+    create_summary_hash,
+    detect_language,
+    extract_keywords,
+    normalize_title,
+)
 import feedparser
 
 
@@ -25,11 +31,13 @@ def ingest_feed(db, rss_url):
 
     for entry in feed.entries[:INGEST_LIMIT]:
         title = entry.get("title")
+        normalized_title = normalize_title(title)
         url = entry.get("link")
 #        summary = clean_html_summary(entry.get("summary"))
         raw_summary = entry.get("summary")
         language = detect_language(raw_summary)
         clean_summary, tokens = clean_html_summary(raw_summary)
+        summary_hash = create_summary_hash(clean_summary)
         word_count = len(raw_summary.split()) if raw_summary else 0
         char_count = len(clean_summary) if clean_summary else 0
         token_count = len(tokens)
@@ -62,8 +70,10 @@ def ingest_feed(db, rss_url):
 
         article = Article(
             title=title,
+            normalized_title=normalized_title,
             url=url,
             summary=raw_summary,
+            summary_hash=summary_hash,
             clean_summary=clean_summary,
             word_count=word_count,
             char_count=char_count,
