@@ -10,6 +10,7 @@ class ArticleBase(BaseModel):
     published_at: datetime | None = None
     source_name: str | None = None
     word_count: int | None = None
+    char_count: int | None = None
 #    source: str | None = None
 #    content: str | None = None
 
