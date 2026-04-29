@@ -15,3 +15,4 @@ class Article(Base):
     published_at = Column(DateTime, nullable=True)
     source_name = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    word_count = Column(Integer, nullable=True)
