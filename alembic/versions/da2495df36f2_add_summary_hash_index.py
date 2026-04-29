@@ -20,16 +20,16 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
-op.create_index(
-    "ix_articles_summary_hash",
-    "articles",
-    ["summary_hash"],
-)
+    op.create_index(
+        "ix_articles_summary_hash",
+        "articles",
+        ["summary_hash"],
+    )
 
 def downgrade() -> None:
     """Downgrade schema."""
-op.drop_index(
-    "ix_articles_summary_hash",
-    table_name="articles",
-)
+    op.drop_index(
+        "ix_articles_summary_hash",
+        table_name="articles",
+    )
 
