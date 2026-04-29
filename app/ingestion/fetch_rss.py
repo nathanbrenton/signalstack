@@ -60,7 +60,19 @@ def ingest_feed(db, rss_url):
         print(f"Source: {source_name}")
         print(f"Clean summary: {clean_summary[:100] if clean_summary else None}") # for debugging only
 
-        existing_article = db.query(Article).filter(Article.url == url).first()
+#        existing_article = db.query(Article).filter(Article.url == url).first()
+        existing_article = (
+            db.query(Article)
+            .filter(
+                (Article.url == url)
+                | (
+                    Article.summary_hash == summary_hash
+                    if summary_hash
+                    else False
+                )
+            )
+            .first()
+        )
 
         if existing_article:
             print(f"Skipping duplicate: {title}")
