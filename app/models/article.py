@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, DateTime, Integer, String, Text, DateTime
 from datetime import datetime
 
 from app.db.base import Base
@@ -19,6 +19,7 @@ class Article(Base):
     source_name = Column(String, nullable=True)
     language = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    ingested_at = Column(DateTime, nullable=True)
     word_count = Column(Integer, nullable=True)
     char_count = Column(Integer, nullable=True)
     token_count = Column(Integer, nullable=True)
