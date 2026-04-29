@@ -28,9 +28,10 @@ def ingest_feed(db, rss_url):
         url = entry.get("link")
 #        summary = clean_html_summary(entry.get("summary"))
         raw_summary = entry.get("summary")
-        clean_summary = clean_html_summary(raw_summary)
-        word_count = len(clean_summary.split()) if clean_summary else 0
+        clean_summary, tokens = clean_html_summary(raw_summary)
+        word_count = len(raw_summary.split()) if raw_summary else 0
         char_count = len(clean_summary) if clean_summary else 0
+        token_count = len(tokens)
 
 
         if not title or not url:
@@ -64,7 +65,7 @@ def ingest_feed(db, rss_url):
             char_count=char_count,
             published_at=published_at,
             source_name=source_name,
-            token_count=len(clean_summary.split()) if clean_summary else 0,
+            token_count=token_count,
         )
 
         db.add(article)

@@ -20,9 +20,9 @@ STOPWORDS = {
     "an", 
 }
 
-def clean_html_summary(raw_summary: str | None) -> str | None:
+def clean_html_summary(raw_summary: str | None):
     if raw_summary is None:
-        return None
+        return "", []
 
     text = unescape(unescape(raw_summary))
     text = sub(r"<[^>]+>", "", text)
@@ -33,10 +33,12 @@ def clean_html_summary(raw_summary: str | None) -> str | None:
     text = sub(r"[^\w\s\.\,\!\?]", "", text) # Remove excess punctuation (keep .,!? for now)
 
     if len(text) < 40:
-        return None
+        return "", []
 
     words = text.split()
-    filtered_words = [w for w in words if w not in STOPWORDS]
-    text = " ".join(filtered_words)
 
-    return text
+    filtered_tokens = [w for w in words if w not in STOPWORDS]
+
+    cleaned_text = " ".join(filtered_tokens)
+
+    return cleaned_text, filtered_tokens
