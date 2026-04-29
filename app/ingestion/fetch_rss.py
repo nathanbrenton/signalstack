@@ -85,6 +85,8 @@ def ingest_feed(db, rss_url):
 
         print(f"Inserting: {title}")
 
+        ingested_at = datetime.utcnow()
+
         article = Article(
             title=title,
             normalized_title=normalized_title,
@@ -100,6 +102,7 @@ def ingest_feed(db, rss_url):
             token_count=token_count,
             keywords=keywords_text,
             top_keyword=top_keyword,
+            ingested_at=ingested_at,
         )
 
         db.add(article)
