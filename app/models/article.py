@@ -15,6 +15,7 @@ class Article(Base):
     keywords = Column(String, nullable=True)
     published_at = Column(DateTime, nullable=True)
     source_name = Column(String, nullable=True)
+    language = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     word_count = Column(Integer, nullable=True)
     char_count = Column(Integer, nullable=True)
