@@ -1,6 +1,24 @@
 from html import unescape
 from re import sub
 
+STOPWORDS = {
+    "the", 
+    "and", 
+    "is", 
+    "to", 
+    "of", 
+    "in", 
+    "that", 
+    "it", 
+    "on", 
+    "for", 
+    "with", 
+    "as", 
+    "was", 
+    "at", 
+    "by", 
+    "an", 
+}
 
 def clean_html_summary(raw_summary: str | None) -> str | None:
     if raw_summary is None:
@@ -16,5 +34,9 @@ def clean_html_summary(raw_summary: str | None) -> str | None:
 
     if len(text) < 40:
         return None
+
+    words = text.split()
+    filtered_words = [w for w in words if w not in STOPWORDS]
+    text = " ".join(filtered_words)
 
     return text
