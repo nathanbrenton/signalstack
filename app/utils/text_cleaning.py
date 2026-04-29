@@ -94,3 +94,22 @@ def create_summary_hash(clean_summary: str | None) -> str | None:
         return None
 
     return sha256(clean_summary.encode("utf-8")).hexdigest()
+
+
+def calculate_quality_score(
+    clean_summary: str | None,
+    token_count: int | None,
+    keywords: list[str] | None,
+) -> float:
+    score = 0.0
+
+    if clean_summary:
+        score += min(len(clean_summary) / 500, 1.0) * 40
+
+    if token_count:
+        score += min(token_count / 75, 1.0) * 40
+
+    if keywords:
+        score += min(len(keywords) / 5, 1.0) * 20
+
+    return round(score, 2)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, String, Text, DateTime
+from sqlalchemy import Column, DateTime, Float, Integer, String, Text, DateTime
 from datetime import datetime
 
 from app.db.base import Base
@@ -24,3 +24,4 @@ class Article(Base):
     char_count = Column(Integer, nullable=True)
     token_count = Column(Integer, nullable=True)
     top_keyword = Column(String, nullable=True)
+    quality_score = Column(Float, nullable=True)

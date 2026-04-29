@@ -4,10 +4,11 @@ from app.db.session import SessionLocal
 from app.models.article import Article
 from app.utils.text_cleaning import (
     clean_html_summary,
-    create_summary_hash,
     detect_language,
     extract_keywords,
     normalize_title,
+    create_summary_hash,
+    calculate_quality_score,
 )
 import feedparser
 
@@ -43,6 +44,11 @@ def ingest_feed(db, rss_url):
         token_count = len(tokens)
         keywords = extract_keywords(tokens)
         keywords_text = ", ".join(keywords)
+        quality_score = calculate_quality_score(
+            clean_summary,
+            token_count,
+            keywords,
+        )
         top_keyword = keywords[0] if keywords else None
 
 
@@ -103,6 +109,7 @@ def ingest_feed(db, rss_url):
             keywords=keywords_text,
             top_keyword=top_keyword,
             ingested_at=ingested_at,
+            quality_score=quality_score,
         )
 
         db.add(article)
