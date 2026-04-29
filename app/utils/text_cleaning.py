@@ -61,3 +61,18 @@ def extract_keywords(tokens: list[str], top_n: int = 5) -> list[str]:
     most_common = counts.most_common(top_n)
 
     return [word for word, _ in most_common]
+
+
+def detect_language(text: str | None) -> str:
+    if not text:
+        return "unknown"
+
+    words = text.lower().split()
+
+    if not words:
+        return "unknown"
+
+    stopword_hits = sum(1 for word in words if word.strip(".,!?") in STOPWORDS)
+    ratio = stopword_hits / len(words)
+
+    return "en" if ratio > 0.1 else "unknown"
