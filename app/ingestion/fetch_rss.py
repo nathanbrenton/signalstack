@@ -34,6 +34,7 @@ def ingest_feed(db, rss_url):
         token_count = len(tokens)
         keywords = extract_keywords(tokens)
         keywords_text = ", ".join(keywords)
+        top_keyword = keywords[0] if keywords else None
 
 
         if not title or not url:
@@ -69,6 +70,7 @@ def ingest_feed(db, rss_url):
             source_name=source_name,
             token_count=token_count,
             keywords=keywords_text,
+            top_keyword=top_keyword,
         )
 
         db.add(article)

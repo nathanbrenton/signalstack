@@ -19,3 +19,4 @@ class Article(Base):
     word_count = Column(Integer, nullable=True)
     char_count = Column(Integer, nullable=True)
     token_count = Column(Integer, nullable=True)
+    top_keyword = Column(String, nullable=True)
