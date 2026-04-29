@@ -17,3 +17,4 @@ class Article(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     word_count = Column(Integer, nullable=True)
     char_count = Column(Integer, nullable=True)
+    token_count = Column(Integer, nullable=True)

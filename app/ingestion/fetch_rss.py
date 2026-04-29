@@ -64,6 +64,7 @@ def ingest_feed(db, rss_url):
             char_count=char_count,
             published_at=published_at,
             source_name=source_name,
+            token_count=len(clean_summary.split()) if clean_summary else 0,
         )
 
         db.add(article)
