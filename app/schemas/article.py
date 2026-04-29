@@ -1,7 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel
 
-
+# Article response schema
 class ArticleBase(BaseModel):
     title: str
     url: str
@@ -11,6 +11,14 @@ class ArticleBase(BaseModel):
     source_name: str | None = None
     word_count: int | None = None
     char_count: int | None = None
+    normalized_title: str | None = None
+    summary_hash: str | None = None
+    keywords: str | None = None
+    top_keyword: str | None = None
+    language: str | None = None
+    token_count: int | None = None
+    ingested_at: datetime | None = None
+    quality_score: float | None = None
 #    source: str | None = None
 #    content: str | None = None
 
