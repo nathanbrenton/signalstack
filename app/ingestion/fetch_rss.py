@@ -70,6 +70,11 @@ def ingest_feed(db, rss_url):
                     if summary_hash
                     else False
                 )
+                | (
+                    Article.normalized_title == normalized_title
+                    if normalized_title
+                    else False
+                )
             )
             .first()
         )
