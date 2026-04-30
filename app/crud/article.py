@@ -18,10 +18,19 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
 
 #def get_articles(db: Session) -> list[Article]:
 #    return db.query(Article).all()
-def get_articles(db: Session) -> list[Article]:
+
+#def get_articles(db: Session) -> list[Article]:
+#    return (
+#        db.query(Article)
+#        .order_by(Article.quality_score.desc().nullslast())
+#        .all()
+#    )
+
+def get_articles(db: Session, limit: int = 10) -> list[Article]:
     return (
         db.query(Article)
         .order_by(Article.quality_score.desc().nullslast())
+        .limit(limit)
         .all()
     )
 

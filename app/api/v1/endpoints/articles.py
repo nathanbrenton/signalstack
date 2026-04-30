@@ -23,4 +23,4 @@ def list_all(
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
 ):
-    return get_articles(db)[:limit]
+    return get_articles(db, limit=limit)
