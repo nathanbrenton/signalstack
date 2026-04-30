@@ -16,8 +16,14 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
+#def get_articles(db: Session) -> list[Article]:
+#    return db.query(Article).all()
 def get_articles(db: Session) -> list[Article]:
-    return db.query(Article).all()
+    return (
+        db.query(Article)
+        .order_by(Article.quality_score.desc().nullslast())
+        .all()
+    )
 
 
 def get_article_by_url(db: Session, url: str) -> Article | None:
