@@ -38,11 +38,15 @@ def get_articles(
     db: Session,
     limit: int = 10,
     min_quality_score: float | None = None,
+    keyword: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
+
+    if keyword:
+        query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
 
     return (
         query

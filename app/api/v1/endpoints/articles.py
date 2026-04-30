@@ -32,6 +32,7 @@ def list_all(
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
     min_quality_score: float | None = Query(None, ge=0),
+    keyword: str | None = Query(None),
 ):
     return get_articles(
         db,
