@@ -17,10 +17,24 @@ def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
 
 @router.get("/articles", response_model=list[ArticleRead])
+
 #def list_all(db: Session = Depends(get_db)):
 #    return get_articles(db)
+
+#def list_all(
+#    db: Session = Depends(get_db),
+#    limit: int = Query(10, ge=1, le=100),
+#):
+#    return get_articles(db, limit=limit)
+
+@router.get("/articles", response_model=list[ArticleRead])
 def list_all(
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
+    min_quality_score: float | None = Query(None, ge=0),
 ):
-    return get_articles(db, limit=limit)
+    return get_articles(
+        db,
+        limit=limit,
+        min_quality_score=min_quality_score,
+    )

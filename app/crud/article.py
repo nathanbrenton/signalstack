@@ -26,9 +26,26 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
 #        .all()
 #    )
 
-def get_articles(db: Session, limit: int = 10) -> list[Article]:
+#def get_articles(db: Session, limit: int = 10) -> list[Article]:
+#    return (
+#        db.query(Article)
+#        .order_by(Article.quality_score.desc().nullslast())
+#        .limit(limit)
+#        .all()
+#    )
+
+def get_articles(
+    db: Session,
+    limit: int = 10,
+    min_quality_score: float | None = None,
+) -> list[Article]:
+    query = db.query(Article)
+
+    if min_quality_score is not None:
+        query = query.filter(Article.quality_score >= min_quality_score)
+
     return (
-        db.query(Article)
+        query
         .order_by(Article.quality_score.desc().nullslast())
         .limit(limit)
         .all()
@@ -37,6 +54,7 @@ def get_articles(db: Session, limit: int = 10) -> list[Article]:
 
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
+
 
 def count_articles(db: Session) -> int:
     return db.query(Article).count()
