@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.db.deps import get_db
@@ -17,5 +17,10 @@ def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
 
 @router.get("/articles", response_model=list[ArticleRead])
-def list_all(db: Session = Depends(get_db)):
-    return get_articles(db)
+#def list_all(db: Session = Depends(get_db)):
+#    return get_articles(db)
+def list_all(
+    db: Session = Depends(get_db),
+    limit: int = Query(10, ge=1, le=100),
+):
+    return get_articles(db)[:limit]
