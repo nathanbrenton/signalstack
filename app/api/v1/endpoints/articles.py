@@ -16,7 +16,6 @@ def create(article: ArticleCreate, db: Session = Depends(get_db)):
 def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
 
-@router.get("/articles", response_model=list[ArticleRead])
 
 # Endpoint
 @router.get("/articles", response_model=list[ArticleRead])
@@ -32,9 +31,12 @@ def list_all(
     published_after: datetime | None = Query(None),
     published_before: datetime | None = Query(None),
     sort_by: str | None = Query(None),
+    order: str | None = Query(None),
 ):
 
+
 ##### CRUD passes
+    # The "get_articles" call:
     return get_articles(
         db,
         limit=limit,
@@ -45,4 +47,6 @@ def list_all(
         published_after=published_after,
         published_before=published_before,
         sort_by=sort_by,
+        order=order,
+        keyword=keyword,
     )

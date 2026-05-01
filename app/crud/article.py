@@ -28,6 +28,7 @@ def get_articles(
     published_after: datetime | None = None,
     published_before: datetime | None = None,
     sort_by: str | None = None,
+    order: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -53,22 +54,17 @@ def get_articles(
     if published_before:
         query = query.filter(Article.published_at <= published_before)
 
-#    return (
-#        query
-##        .order_by(Article.quality_score.desc().nullslast())
-#        if sort_by == "published_at":
-#            query = query.order_by(Article.published_at.desc().nullslast())
-#        else:
-#            query = query.order_by(Article.quality_score.desc().nullslast())
-#        .limit(limit)
-#        .all()
-#    )
 
     if sort_by == "published_at":
-        query = query.order_by(Article.published_at.desc().nullslast())
+        if order == "asc":
+            query = query.order_by(Article.published_at.asc().nullslast())
+        else:
+            query = query.order_by(Article.published_at.desc().nullslast())
     else:
-        query = query.order_by(Article.quality_score.desc().nullslast())
-    
+        if order == "asc":
+            query = query.order_by(Article.quality_score.asc().nullslast())
+        else:
+            query = query.order_by(Article.quality_score.desc().nullslast())
     return query.limit(limit).all()
 
 
