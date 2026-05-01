@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy.orm import Session
 from app.models.article import Article
 from app.schemas.article import ArticleCreate
@@ -24,6 +25,7 @@ def get_articles(
     language: str | None = None,
     source_name: str | None = None,
     top_keyword: str | None = None,
+    published_after: datetime | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -42,6 +44,9 @@ def get_articles(
 
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
+
+    if published_after:
+        query = query.filter(Article.published_at >= published_after)
 
     return (
         query
