@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
-
 from app.db.deps import get_db
 from app.crud.article import create_article, get_articles, count_articles
 from app.schemas.article import ArticleCreate, ArticleRead
@@ -27,15 +26,18 @@ def article_count(db: Session = Depends(get_db)):
 #):
 #    return get_articles(db, limit=limit)
 
+# endpoint parameters
 @router.get("/articles", response_model=list[ArticleRead])
 def list_all(
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
     min_quality_score: float | None = Query(None, ge=0),
     keyword: str | None = Query(None),
+    language: str | None = Query(None),
 ):
     return get_articles(
         db,
         limit=limit,
         min_quality_score=min_quality_score,
+        language=language,
     )

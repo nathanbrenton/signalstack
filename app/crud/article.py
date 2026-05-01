@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-
 from app.models.article import Article
 from app.schemas.article import ArticleCreate
 
@@ -39,14 +38,20 @@ def get_articles(
     limit: int = 10,
     min_quality_score: float | None = None,
     keyword: str | None = None,
+    language: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
 
+    # keyword filter
     if keyword:
         query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
+
+    # language filter
+    if language:
+        query = query.filter(Article.language == language)
 
     return (
         query
