@@ -26,6 +26,7 @@ def get_articles(
     source_name: str | None = None,
     top_keyword: str | None = None,
     published_after: datetime | None = None,
+    published_before: datetime | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -47,6 +48,9 @@ def get_articles(
 
     if published_after:
         query = query.filter(Article.published_at >= published_after)
+
+    if published_before:
+        query = query.filter(Article.published_at <= published_before)
 
     return (
         query

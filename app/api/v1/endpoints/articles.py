@@ -30,6 +30,7 @@ def list_all(
     source_name: str | None = Query(None),
     top_keyword: str | None = Query(None),
     published_after: datetime | None = Query(None),
+    published_before: datetime | None = Query(None),
 ):
 
     # CRUD passes
@@ -41,4 +42,5 @@ def list_all(
         source_name=source_name,
         top_keyword=top_keyword,
         published_after=published_after,
+        published_before=published_before,
     )
