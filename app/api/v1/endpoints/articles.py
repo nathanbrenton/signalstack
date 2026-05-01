@@ -26,6 +26,7 @@ def list_all(
     keyword: str | None = Query(None),
     language: str | None = Query(None),
     source_name: str | None = Query(None),
+    top_keyword: str | None = Query(None),
 ):
 
     # CRUD passes
@@ -35,4 +36,5 @@ def list_all(
         min_quality_score=min_quality_score,
         language=language,
         source_name=source_name,
+        top_keyword=top_keyword,
     )
