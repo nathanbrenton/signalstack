@@ -17,16 +17,7 @@ def article_count(db: Session = Depends(get_db)):
 
 @router.get("/articles", response_model=list[ArticleRead])
 
-#def list_all(db: Session = Depends(get_db)):
-#    return get_articles(db)
-
-#def list_all(
-#    db: Session = Depends(get_db),
-#    limit: int = Query(10, ge=1, le=100),
-#):
-#    return get_articles(db, limit=limit)
-
-# endpoint parameters
+# Endpoint
 @router.get("/articles", response_model=list[ArticleRead])
 def list_all(
     db: Session = Depends(get_db),
@@ -34,10 +25,14 @@ def list_all(
     min_quality_score: float | None = Query(None, ge=0),
     keyword: str | None = Query(None),
     language: str | None = Query(None),
+    source_name: str | None = Query(None),
 ):
+
+    # CRUD passes
     return get_articles(
         db,
         limit=limit,
         min_quality_score=min_quality_score,
         language=language,
+        source_name=source_name,
     )

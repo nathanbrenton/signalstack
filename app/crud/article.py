@@ -15,43 +15,29 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
-#def get_articles(db: Session) -> list[Article]:
-#    return db.query(Article).all()
-
-#def get_articles(db: Session) -> list[Article]:
-#    return (
-#        db.query(Article)
-#        .order_by(Article.quality_score.desc().nullslast())
-#        .all()
-#    )
-
-#def get_articles(db: Session, limit: int = 10) -> list[Article]:
-#    return (
-#        db.query(Article)
-#        .order_by(Article.quality_score.desc().nullslast())
-#        .limit(limit)
-#        .all()
-#    )
-
 def get_articles(
+    # parameters:
     db: Session,
     limit: int = 10,
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
+    source_name: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
 
-    # keyword filter
+    # Filters
     if keyword:
         query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
 
-    # language filter
     if language:
         query = query.filter(Article.language == language)
+
+    if source_name:
+        query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
 
     return (
         query
