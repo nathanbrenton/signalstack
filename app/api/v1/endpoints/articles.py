@@ -33,6 +33,7 @@ def list_all(
     sort_by: str | None = Query(None),
     order: str | None = Query(None),
     has_keywords: bool | None = Query(None),
+    has_summary: bool | None = Query(None),
 ):
 
 
@@ -51,4 +52,5 @@ def list_all(
         order=order,
         keyword=keyword,
         has_keywords=has_keywords,
+        has_summary=has_summary,
     )
