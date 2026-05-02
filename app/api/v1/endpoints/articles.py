@@ -36,6 +36,7 @@ def list_all(
     has_summary: bool | None = Query(None),
     has_language: bool | None = Query(None),
     has_top_keyword: bool | None = Query(None),
+    has_quality_score: bool | None = Query(None),
 ):
 
 
@@ -57,4 +58,5 @@ def list_all(
         has_summary=has_summary,
         has_language=has_language,
         has_top_keyword=has_top_keyword,
+        has_quality_score=has_quality_score,
     )
