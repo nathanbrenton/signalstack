@@ -37,6 +37,7 @@ def get_articles(
     min_token_count: int | None = None,
     max_token_count: int | None = None,
     min_char_count: int | None = None,
+    max_char_count: int | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -99,6 +100,8 @@ def get_articles(
     if min_char_count is not None:
         query = query.filter(Article.char_count >= min_char_count)
 
+    if max_char_count is not None:
+        query = query.filter(Article.char_count <= max_char_count)
 
 
 #################################

@@ -40,6 +40,7 @@ def list_all(
     min_token_count: int | None = Query(None, ge=0),
     max_token_count: int | None = Query(None, ge=0),
     min_char_count: int | None = Query(None, ge=0),
+    max_char_count: int | None = Query(None, ge=0),
 ):
 
 
@@ -65,4 +66,5 @@ def list_all(
         min_token_count=min_token_count,
         max_token_count=max_token_count,
         min_char_count=min_char_count,
+        max_char_count=max_char_count,
     )
