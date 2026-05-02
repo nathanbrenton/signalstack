@@ -45,6 +45,7 @@ def list_all(
     max_word_count: int | None = Query(None, ge=0),
     search: str | None = Query(None),
     search_title: str | None = Query(None),
+    search_summary: str | None = Query(None),
 ):
 
 
@@ -75,4 +76,5 @@ def list_all(
         max_word_count=max_word_count,
         search=search,
         search_title=search_title,
+        search_summary=search_summary,
     )
