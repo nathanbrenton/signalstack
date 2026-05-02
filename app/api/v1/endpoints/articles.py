@@ -34,6 +34,7 @@ def list_all(
     order: str | None = Query(None),
     has_keywords: bool | None = Query(None),
     has_summary: bool | None = Query(None),
+    has_language: bool | None = Query(None),
 ):
 
 
@@ -53,4 +54,5 @@ def list_all(
         keyword=keyword,
         has_keywords=has_keywords,
         has_summary=has_summary,
+        has_language=has_language,
     )

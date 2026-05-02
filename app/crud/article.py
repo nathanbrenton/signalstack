@@ -31,6 +31,7 @@ def get_articles(
     order: str | None = None,
     has_keywords: bool | None = None,
     has_summary: bool | None = None,
+    has_language: bool | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -75,6 +76,8 @@ def get_articles(
     if has_summary is True:
         query = query.filter(Article.clean_summary.isnot(None))
 
+    if has_language is True:
+        query = query.filter(Article.language.isnot(None))
 
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
