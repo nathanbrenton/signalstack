@@ -42,6 +42,7 @@ def list_all(
     min_char_count: int | None = Query(None, ge=0),
     max_char_count: int | None = Query(None, ge=0),
     min_word_count: int | None = Query(None, ge=0),
+    max_word_count: int | None = Query(None, ge=0),
 ):
 
 
@@ -69,4 +70,5 @@ def list_all(
         min_char_count=min_char_count,
         max_char_count=max_char_count,
         min_word_count=min_word_count,
+        max_word_count=max_word_count,
     )
