@@ -38,6 +38,7 @@ def get_articles(
     max_token_count: int | None = None,
     min_char_count: int | None = None,
     max_char_count: int | None = None,
+    min_word_count: int | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -103,6 +104,8 @@ def get_articles(
     if max_char_count is not None:
         query = query.filter(Article.char_count <= max_char_count)
 
+    if min_word_count is not None:
+        query = query.filter(Article.word_count >= min_word_count)
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
