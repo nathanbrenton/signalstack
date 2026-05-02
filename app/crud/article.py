@@ -29,6 +29,7 @@ def get_articles(
     published_before: datetime | None = None,
     sort_by: str | None = None,
     order: str | None = None,
+    has_keywords: bool | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -67,6 +68,8 @@ def get_articles(
             query = query.order_by(Article.quality_score.desc().nullslast())
     return query.limit(limit).all()
 
+    if has_keywords is True:
+        query = query.filter(Article.keywords.isnot(None))
 
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()

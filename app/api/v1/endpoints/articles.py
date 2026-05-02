@@ -32,6 +32,7 @@ def list_all(
     published_before: datetime | None = Query(None),
     sort_by: str | None = Query(None),
     order: str | None = Query(None),
+    has_keywords: bool | None = Query(None),
 ):
 
 
@@ -49,4 +50,5 @@ def list_all(
         sort_by=sort_by,
         order=order,
         keyword=keyword,
+        has_keywords=has_keywords,
     )
