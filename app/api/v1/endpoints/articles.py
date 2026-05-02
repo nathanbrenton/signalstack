@@ -38,6 +38,7 @@ def list_all(
     has_top_keyword: bool | None = Query(None),
     has_quality_score: bool | None = Query(None),
     min_token_count: int | None = Query(None, ge=0),
+    max_token_count: int | None = Query(None, ge=0),
 ):
 
 
@@ -61,4 +62,5 @@ def list_all(
         has_top_keyword=has_top_keyword,
         has_quality_score=has_quality_score,
         min_token_count=min_token_count,
+        max_token_count=max_token_count,
     )
