@@ -34,6 +34,7 @@ def get_articles(
     has_language: bool | None = None,
     has_top_keyword: bool | None = None,
     has_quality_score: bool | None = None,
+    min_token_count: int | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -87,6 +88,10 @@ def get_articles(
     if has_quality_score is True:
         query = query.filter(Article.quality_score.isnot(None))
 
+    if min_token_count is not None:
+        query = query.filter(Article.token_count >= min_token_count)
+
+#################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
 
