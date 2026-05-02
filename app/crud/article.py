@@ -41,6 +41,7 @@ def get_articles(
     min_word_count: int | None = None,
     max_word_count: int | None = None,
     search: str | None = None,
+    search_title: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -52,6 +53,11 @@ def get_articles(
             (Article.title.ilike(search_term))
             | (Article.clean_summary.ilike(search_term))
         )
+
+    if search_title:
+        query = query.filter(Article.title.ilike(f"%{search_title}%"))
+
+###
 
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
