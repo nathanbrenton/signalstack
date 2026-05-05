@@ -48,6 +48,7 @@ def list_all(
     search_summary: str | None = Query(None),
     search_keywords: str | None = Query(None),
     search_source: str | None = Query(None),
+    search_all: str | None = Query(None),
 ):
 
 
@@ -81,4 +82,5 @@ def list_all(
         search_summary=search_summary,
         search_keywords=search_keywords,
         search_source=search_source,
+        search_all=search_all,
     )
