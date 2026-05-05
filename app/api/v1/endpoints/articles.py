@@ -51,6 +51,8 @@ def list_all(
     search_all: str | None = Query(None),
     exclude_keyword: str | None = Query(None),
     exclude_source: str | None = Query(None),
+    exclude_language: str | None = Query(None),
+    page: int | None = Query(None, ge=1),
 ):
 
 
@@ -87,4 +89,6 @@ def list_all(
         search_all=search_all,
         exclude_keyword=exclude_keyword,
         exclude_source=exclude_source,
+        exclude_language=exclude_language,
+        page=page,
     )

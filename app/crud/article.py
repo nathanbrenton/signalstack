@@ -49,6 +49,7 @@ def get_articles(
     exclude_keyword: str | None = None,
     exclude_source: str | None = None,
     exclude_language: str | None = None,
+    page: int | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -164,6 +165,9 @@ def get_articles(
         else:
             query = query.order_by(Article.quality_score.desc().nullslast())
 
+    if page and page > 1:
+        offset = (page - 1) * limit
+        query = query.offset(offset)
 
 ### Limit / Return
 
