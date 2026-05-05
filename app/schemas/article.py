@@ -19,8 +19,6 @@ class ArticleBase(BaseModel):
     token_count: int | None = None
     ingested_at: datetime | None = None
     quality_score: float | None = None
-#    source: str | None = None
-#    content: str | None = None
 
 
 class ArticleCreate(ArticleBase):
@@ -33,3 +31,15 @@ class ArticleRead(ArticleBase):
 
     class Config:
         from_attributes = True
+
+
+class ArticleListMeta(BaseModel):
+    page: int
+    limit: int
+    total: int
+    pages: int
+
+
+class ArticleListResponse(BaseModel):
+    data: list[ArticleRead]
+    meta: ArticleListMeta
