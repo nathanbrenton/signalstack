@@ -47,6 +47,7 @@ def get_articles(
     search_source: str | None = None,
     search_all: str | None = None,
     exclude_keyword: str | None = None,
+    exclude_source: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -152,6 +153,9 @@ def get_articles(
 
     if exclude_keyword:
         query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
+
+    if exclude_source:
+        query = query.filter(~Article.source_name.ilike(f"%{exclude_source}%"))
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
