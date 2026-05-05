@@ -43,6 +43,7 @@ def get_articles(
     search: str | None = None,
     search_title: str | None = None,
     search_summary: str | None = None,
+    search_keywords: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -129,6 +130,9 @@ def get_articles(
 
     if max_word_count is not None:
         query = query.filter(Article.word_count <= max_word_count)
+
+    if search_keywords:
+        query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
