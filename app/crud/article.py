@@ -44,6 +44,7 @@ def get_articles(
     search_title: str | None = None,
     search_summary: str | None = None,
     search_keywords: str | None = None,
+    search_source: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
@@ -133,6 +134,9 @@ def get_articles(
 
     if search_keywords:
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
+
+    if search_source:
+        query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
