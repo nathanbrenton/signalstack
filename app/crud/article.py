@@ -48,12 +48,14 @@ def get_articles(
     search_all: str | None = None,
     exclude_keyword: str | None = None,
     exclude_source: str | None = None,
+    exclude_language: str | None = None,
 ) -> list[Article]:
     query = db.query(Article)
 
 
 #   # Filters
-### Search Filters START
+
+### Search Filters
     if search:
         search_term = f"%{search}%"
         query = query.filter(
@@ -76,7 +78,7 @@ def get_articles(
             | (Article.keywords.ilike(term))
             | (Article.source_name.ilike(term))
         )
-### Search Filters END
+### Inclusion Filters
 
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
@@ -98,19 +100,6 @@ def get_articles(
 
     if published_before:
         query = query.filter(Article.published_at <= published_before)
-
-
-    if sort_by == "published_at":
-        if order == "asc":
-            query = query.order_by(Article.published_at.asc().nullslast())
-        else:
-            query = query.order_by(Article.published_at.desc().nullslast())
-    else:
-        if order == "asc":
-            query = query.order_by(Article.quality_score.asc().nullslast())
-        else:
-            query = query.order_by(Article.quality_score.desc().nullslast())
-    return query.limit(limit).all()
 
     if has_keywords is True:
         query = query.filter(Article.keywords.isnot(None))
@@ -151,11 +140,36 @@ def get_articles(
     if search_source:
         query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
+### Exclusion Filters
+
     if exclude_keyword:
         query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
 
     if exclude_source:
         query = query.filter(~Article.source_name.ilike(f"%{exclude_source}%"))
+
+    if exclude_language:
+        query = query.filter(Article.language != exclude_language)
+
+### Sorting Filters
+
+    if sort_by == "published_at":
+        if order == "asc":
+            query = query.order_by(Article.published_at.asc().nullslast())
+        else:
+            query = query.order_by(Article.published_at.desc().nullslast())
+    else:
+        if order == "asc":
+            query = query.order_by(Article.quality_score.asc().nullslast())
+        else:
+            query = query.order_by(Article.quality_score.desc().nullslast())
+
+
+### Limit / Return
+
+    return query.limit(limit).all()
+
+
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
