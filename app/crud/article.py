@@ -49,13 +49,15 @@ def build_article_query(
 ):
     query = db.query(Article)
 
-### boolean presence filters
+    ### Quality / Inclusion Filters
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
     if keyword:
         query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
     if language:
         query = query.filter(Article.language == language)
+
+    ### Count / Length Filters
     if min_token_count is not None:
         query = query.filter(Article.token_count >= min_token_count)
     if max_token_count is not None:
@@ -93,7 +95,7 @@ def build_article_query(
             | (Article.source_name.ilike(term))
         )
 
-    # Exclude Filters
+    ### Exclusion Filters
     if exclude_keyword:
         query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
     if exclude_source:
