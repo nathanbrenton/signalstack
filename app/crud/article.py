@@ -16,20 +16,13 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
-#def build_article_query(
-#    db: Session,
-#):
-#def build_article_query(
-#    db: Session,
-#    min_quality_score: float | None = None,
-#    keyword: str | None = None,
-#    language: str | None = None,
-#):
 def build_article_query(
     db: Session,
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
+    source_name: str | None = None,
+    top_keyword: str | None = None,
 ):
     query = db.query(Article)
 
