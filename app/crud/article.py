@@ -146,28 +146,8 @@ def get_articles(
     )
 
     ### ### ###  Filters
-    ### Search Filters
-    if search:
-        search_term = f"%{search}%"
-        query = query.filter(
-            (Article.title.ilike(search_term))
-            | (Article.clean_summary.ilike(search_term))
-        )
 
-    if search_title:
-        query = query.filter(Article.title.ilike(f"%{search_title}%"))
-
-    if search_summary:
-        query = query.filter(Article.clean_summary.ilike(f"%{search_summary}%"))
-
-    if search_all:
-        term = f"%{search_all}%"
-        query = query.filter(
-            (Article.title.ilike(term))
-            | (Article.clean_summary.ilike(term))
-            | (Article.keywords.ilike(term))
-            | (Article.source_name.ilike(term))
-        )
+    ### Search Filters (moved to build)
 
     ### Inclusion Filters
     if source_name:
