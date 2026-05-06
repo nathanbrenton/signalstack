@@ -16,6 +16,11 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
+def build_article_query(
+    db: Session,
+):
+    return db.query(Article)
+
 def get_articles(
 ##### Parameters:
     db: Session,
