@@ -19,7 +19,10 @@ def article_count(db: Session = Depends(get_db)):
 
 # Endpoint
 @router.get("/articles", response_model=list[ArticleRead])
+
+# The list_all function
 def list_all(
+
 ##### Parameters:
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
@@ -58,7 +61,43 @@ def list_all(
 
 ##### CRUD passes
     # The "get_articles" call:
-    return get_articles(
+#    return get_articles(
+#        db,
+#        limit=limit,
+#        min_quality_score=min_quality_score,
+#        language=language,
+#        source_name=source_name,
+#        top_keyword=top_keyword,
+#        published_after=published_after,
+#        published_before=published_before,
+#        sort_by=sort_by,
+#        order=order,
+#        keyword=keyword,
+#        has_keywords=has_keywords,
+#        has_summary=has_summary,
+#        has_language=has_language,
+#        has_top_keyword=has_top_keyword,
+#        has_quality_score=has_quality_score,
+#        min_token_count=min_token_count,
+#        max_token_count=max_token_count,
+#        min_char_count=min_char_count,
+#        max_char_count=max_char_count,
+#        min_word_count=min_word_count,
+#        max_word_count=max_word_count,
+#        search=search,
+#        search_title=search_title,
+#        search_summary=search_summary,
+#        search_keywords=search_keywords,
+#        search_source=search_source,
+#        search_all=search_all,
+#        exclude_keyword=exclude_keyword,
+#        exclude_source=exclude_source,
+#        exclude_language=exclude_language,
+#        page=page,
+#    )
+
+
+    articles = get_articles(
         db,
         limit=limit,
         min_quality_score=min_quality_score,
@@ -92,3 +131,7 @@ def list_all(
         exclude_language=exclude_language,
         page=page,
     )
+
+    total = count_articles(db)
+
+    return articles
