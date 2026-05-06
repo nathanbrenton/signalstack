@@ -4,6 +4,7 @@ from app.models.article import Article
 from app.schemas.article import ArticleCreate
 
 
+# signature / create_article() Function DEFINITION
 def create_article(db: Session, article: ArticleCreate) -> Article:
     existing = get_article_by_url(db, article.url)
     if existing:
@@ -16,7 +17,7 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
-# signature / Function DEFINITION
+# signature / build_article_query() Function DEFINITION
 def build_article_query(
     db: Session,
     min_quality_score: float | None = None,
@@ -105,9 +106,9 @@ def build_article_query(
 
     return query
 
-### Function def_articles() DEFINITION
+### Function get_articles() DEFINITION
 def get_articles(
-### Parameters:
+    ### Parameters:
     db: Session,
     limit: int = 10,
     min_quality_score: float | None = None,
@@ -150,12 +151,25 @@ def get_articles(
         language=language,
         source_name=source_name,
         top_keyword=top_keyword,
+        published_after=published_after,
+        published_before=published_before,
+        has_keywords=has_keywords,
+        has_summary=has_summary,
+        has_language=has_language,
+        has_top_keyword=has_top_keyword,
+        has_quality_score=has_quality_score,
         min_token_count=min_token_count,
         max_token_count=max_token_count,
         min_char_count=min_char_count,
         max_char_count=max_char_count,
         min_word_count=min_word_count,
         max_word_count=max_word_count,
+        search=search,
+        search_title=search_title,
+        search_summary=search_summary,
+        search_keywords=search_keywords,
+        search_source=search_source,
+        search_all=search_all,
         exclude_keyword=exclude_keyword,
         exclude_source=exclude_source,
         exclude_language=exclude_language,
@@ -164,27 +178,10 @@ def get_articles(
     ### ### ###  Filters
 
     ### Search Filters (moved to build)
-
-    ### Inclusion Filters
-    if source_name:
-        query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
-    if top_keyword:
-        query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
-
-    ### Date Filters
-    if published_after:
-        query = query.filter(Article.published_at >= published_after)
-    if published_before:
-        query = query.filter(Article.published_at <= published_before)
-
+    ### Inclusion Filters (moved)
+    ### Date Filters (moved)
     ### Count/Length Filters (have been moved)
-
-    ### Search Filters
-    if search_keywords:
-        query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
-    if search_source:
-        query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
-
+    ### Search Filters (moved)
     ### Exclusion Filters (moved)
 
     ### Sorting Filters
