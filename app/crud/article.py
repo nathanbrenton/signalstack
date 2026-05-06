@@ -25,6 +25,11 @@ def build_article_query(
     top_keyword: str | None = None,
     published_after: datetime | None = None,
     published_before: datetime | None = None,
+    has_keywords: bool | None = None,
+    has_summary: bool | None = None,
+    has_language: bool | None = None,
+    has_top_keyword: bool | None = None,
+    has_quality_score: bool | None = None,
 ):
     query = db.query(Article)
 
@@ -37,17 +42,10 @@ def build_article_query(
     if language:
         query = query.filter(Article.language == language)
 
-#    if source_name:
-#        query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
-#    if top_keyword:
-#        query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
-
-
     return query
-#    return db.query(Article)
 
 def get_articles(
-##### Parameters:
+### Parameters:
     db: Session,
     limit: int = 10,
     min_quality_score: float | None = None,
@@ -92,7 +90,7 @@ def get_articles(
     )
 
 
-#   # Filters
+### ### ###  Filters
 ### Search Filters
     if search:
         search_term = f"%{search}%"
@@ -123,31 +121,23 @@ def get_articles(
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
 
-#    if published_after:
-#        query = query.filter(Article.published_at >= published_after)
-#    if published_before:
-#        query = query.filter(Article.published_at <= published_before)
-
+### Date filters
     if published_after:
         query = query.filter(Article.published_at >= published_after)
 
     if published_before:
         query = query.filter(Article.published_at <= published_before)
 
-    if has_keywords is True:
-        query = query.filter(Article.keywords.isnot(None))
-
-    if has_summary is True:
-        query = query.filter(Article.clean_summary.isnot(None))
-
-    if has_language is True:
-        query = query.filter(Article.language.isnot(None))
-
-    if has_top_keyword is True:
-        query = query.filter(Article.top_keyword.isnot(None))
-
-    if has_quality_score is True:
-        query = query.filter(Article.quality_score.isnot(None))
+#   if has_keywords is True:
+#       query = query.filter(Article.keywords.isnot(None))
+#   if has_summary is True:
+#       query = query.filter(Article.clean_summary.isnot(None))
+#   if has_language is True:
+#       query = query.filter(Article.language.isnot(None))
+#   if has_top_keyword is True:
+#       query = query.filter(Article.top_keyword.isnot(None))
+#   if has_quality_score is True:
+#       query = query.filter(Article.quality_score.isnot(None))
 
     if min_token_count is not None:
         query = query.filter(Article.token_count >= min_token_count)
@@ -211,6 +201,7 @@ def get_articles(
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
 
+# signature
 def count_filtered_articles(
     db: Session,
     min_quality_score: float | None = None,
@@ -220,6 +211,11 @@ def count_filtered_articles(
     top_keyword: str | None = None,
     published_after: datetime | None = None,
     published_before: datetime | None = None,
+    has_keywords: bool | None = None,
+    has_summary: bool | None = None,
+    has_language: bool | None = None,
+    has_top_keyword: bool | None = None,
+    has_quality_score: bool | None = None,
 ) -> int:
     query = build_article_query(
         db,
@@ -230,6 +226,11 @@ def count_filtered_articles(
         top_keyword=top_keyword,
         published_after=published_after,
         published_before=published_before,
+        has_keywords=has_keywords,
+        has_summary=has_summary,
+        has_language=has_language,
+        has_top_keyword=has_top_keyword,
+        has_quality_score=has_quality_score,
     )
     return query.count()
 

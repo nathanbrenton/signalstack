@@ -151,6 +151,11 @@ def list_all(
         top_keyword=top_keyword,
         published_after=published_after,
         published_before=published_before,
+        has_keywords=has_keywords,
+        has_summary=has_summary,
+        has_language=has_language,
+        has_top_keyword=has_top_keyword,
+        has_quality_score=has_quality_score,
     )
     pages = (total + limit - 1) // limit
 
