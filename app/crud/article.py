@@ -57,6 +57,37 @@ def build_article_query(
         query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
     if language:
         query = query.filter(Article.language == language)
+    if source_name:
+        query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
+    if top_keyword:
+        query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
+
+    ### Date Filters
+    if published_after:
+        query = query.filter(Article.published_at >= published_after)
+    if published_before:
+        query = query.filter(Article.published_at <= published_before)
+
+    if has_keywords is True:
+        query = query.filter(Article.keywords.isnot(None))
+    if has_keywords is False:
+        query = query.filter(Article.keywords.is_(None))
+    if has_summary is True:
+        query = query.filter(Article.clean_summary.isnot(None))
+    if has_summary is False:
+        query = query.filter(Article.clean_summary.is_(None))
+    if has_language is True:
+        query = query.filter(Article.language.isnot(None))
+    if has_language is False:
+        query = query.filter(Article.language.is_(None))
+    if has_top_keyword is True:
+        query = query.filter(Article.top_keyword.isnot(None))
+    if has_top_keyword is False:
+        query = query.filter(Article.top_keyword.is_(None))
+    if has_quality_score is True:
+        query = query.filter(Article.quality_score.isnot(None))
+    if has_quality_score is False:
+        query = query.filter(Article.quality_score.is_(None))
 
     ### Count / Length Filters
     if min_token_count is not None:
