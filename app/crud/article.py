@@ -65,6 +65,7 @@ def build_article_query(
         query = query.filter(Article.word_count >= min_word_count)
     if max_word_count is not None:
         query = query.filter(Article.word_count <= max_word_count)
+
     ### Search Filters
     if search:
         search_term = f"%{search}%"
@@ -78,6 +79,8 @@ def build_article_query(
         query = query.filter(Article.clean_summary.ilike(f"%{search_summary}%"))
     if search_keywords:
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
+    if search_source:
+        query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
     return query
 
