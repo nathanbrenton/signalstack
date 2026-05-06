@@ -81,6 +81,14 @@ def build_article_query(
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
     if search_source:
         query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
+    if search_all:
+        term = f"%{search_all}%"
+        query = query.filter(
+            (Article.title.ilike(term))
+            | (Article.clean_summary.ilike(term))
+            | (Article.keywords.ilike(term))
+            | (Article.source_name.ilike(term))
+        )
 
     return query
 
