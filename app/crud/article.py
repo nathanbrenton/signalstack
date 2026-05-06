@@ -30,9 +30,16 @@ def build_article_query(
     has_language: bool | None = None,
     has_top_keyword: bool | None = None,
     has_quality_score: bool | None = None,
+    min_token_count: int | None = None,
+    max_token_count: int | None = None,
+    min_char_count: int | None = None,
+    max_char_count: int | None = None,
+    min_word_count: int | None = None,
+    max_word_count: int | None = None,
 ):
     query = db.query(Article)
 
+### boolean presence filters
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
 
@@ -41,6 +48,24 @@ def build_article_query(
 
     if language:
         query = query.filter(Article.language == language)
+
+    if min_token_count is not None:
+        query = query.filter(Article.token_count >= min_token_count)
+
+    if max_token_count is not None:
+        query = query.filter(Article.token_count <= max_token_count)
+
+    if min_char_count is not None:
+        query = query.filter(Article.char_count >= min_char_count)
+
+    if max_char_count is not None:
+        query = query.filter(Article.char_count <= max_char_count)
+
+    if min_word_count is not None:
+        query = query.filter(Article.word_count >= min_word_count)
+
+    if max_word_count is not None:
+        query = query.filter(Article.word_count <= max_word_count)
 
     return query
 
@@ -87,6 +112,12 @@ def get_articles(
         language=language,
         source_name=source_name,
         top_keyword=top_keyword,
+        min_token_count=min_token_count,
+        max_token_count=max_token_count,
+        min_char_count=min_char_count,
+        max_char_count=max_char_count,
+        min_word_count=min_word_count,
+        max_word_count=max_word_count,
     )
 
 
@@ -121,41 +152,26 @@ def get_articles(
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
 
-### Date filters
+### Date Filters
     if published_after:
         query = query.filter(Article.published_at >= published_after)
 
     if published_before:
         query = query.filter(Article.published_at <= published_before)
 
-#   if has_keywords is True:
-#       query = query.filter(Article.keywords.isnot(None))
-#   if has_summary is True:
-#       query = query.filter(Article.clean_summary.isnot(None))
-#   if has_language is True:
-#       query = query.filter(Article.language.isnot(None))
-#   if has_top_keyword is True:
-#       query = query.filter(Article.top_keyword.isnot(None))
-#   if has_quality_score is True:
-#       query = query.filter(Article.quality_score.isnot(None))
-
-    if min_token_count is not None:
-        query = query.filter(Article.token_count >= min_token_count)
-
-    if max_token_count is not None:
-        query = query.filter(Article.token_count <= max_token_count)
-
-    if min_char_count is not None:
-        query = query.filter(Article.char_count >= min_char_count)
-
-    if max_char_count is not None:
-        query = query.filter(Article.char_count <= max_char_count)
-
-    if min_word_count is not None:
-        query = query.filter(Article.word_count >= min_word_count)
-
-    if max_word_count is not None:
-        query = query.filter(Article.word_count <= max_word_count)
+### Count/Length Filters
+#   if min_token_count is not None:
+#       query = query.filter(Article.token_count >= min_token_count)
+#   if max_token_count is not None:
+#       query = query.filter(Article.token_count <= max_token_count)
+#   if min_char_count is not None:
+#       query = query.filter(Article.char_count >= min_char_count)
+#   if max_char_count is not None:
+#       query = query.filter(Article.char_count <= max_char_count)
+#   if min_word_count is not None:
+#       query = query.filter(Article.word_count >= min_word_count)
+#   if max_word_count is not None:
+#       query = query.filter(Article.word_count <= max_word_count)
 
     if search_keywords:
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
@@ -216,6 +232,12 @@ def count_filtered_articles(
     has_language: bool | None = None,
     has_top_keyword: bool | None = None,
     has_quality_score: bool | None = None,
+    min_token_count: int | None = None,
+    max_token_count: int | None = None,
+    min_char_count: int | None = None,
+    max_char_count: int | None = None,
+    min_word_count: int | None = None,
+    max_word_count: int | None = None,
 ) -> int:
     query = build_article_query(
         db,
@@ -231,6 +253,12 @@ def count_filtered_articles(
         has_language=has_language,
         has_top_keyword=has_top_keyword,
         has_quality_score=has_quality_score,
+        min_token_count=min_token_count,
+        max_token_count=max_token_count,
+        min_char_count=min_char_count,
+        max_char_count=max_char_count,
+        min_word_count=min_word_count,
+        max_word_count=max_word_count,
     )
     return query.count()
 
