@@ -142,13 +142,13 @@ def list_all(
         page=page,
     )
 
-#    total = count_articles(db)
-#    total = count_filtered_articles(db)
     total = count_filtered_articles(
         db,
         min_quality_score=min_quality_score,
         keyword=keyword,
         language=language,
+        source_name=source_name,
+        top_keyword=top_keyword,
     )
     pages = (total + limit - 1) // limit
 

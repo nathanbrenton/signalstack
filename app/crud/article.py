@@ -35,6 +35,12 @@ def build_article_query(
     if language:
         query = query.filter(Article.language == language)
 
+#    if source_name:
+#        query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
+#    if top_keyword:
+#        query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
+
+
     return query
 #    return db.query(Article)
 
@@ -79,6 +85,8 @@ def get_articles(
         min_quality_score=min_quality_score,
         keyword=keyword,
         language=language,
+        source_name=source_name,
+        top_keyword=top_keyword,
     )
 
 
@@ -204,22 +212,21 @@ def get_articles(
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
 
-#def count_filtered_articles(
-#    db: Session,
-#) -> int:
-#    query = build_article_query(db)
-#    return query.count()
 def count_filtered_articles(
     db: Session,
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
+    source_name: str | None = None,
+    top_keyword: str | None = None,
 ) -> int:
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
         keyword=keyword,
         language=language,
+        source_name=source_name,
+        top_keyword=top_keyword,
     )
     return query.count()
 
