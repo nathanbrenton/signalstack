@@ -49,31 +49,23 @@ def build_article_query(
 ### boolean presence filters
     if min_quality_score is not None:
         query = query.filter(Article.quality_score >= min_quality_score)
-
     if keyword:
         query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
-
     if language:
         query = query.filter(Article.language == language)
-
     if min_token_count is not None:
         query = query.filter(Article.token_count >= min_token_count)
-
     if max_token_count is not None:
         query = query.filter(Article.token_count <= max_token_count)
-
     if min_char_count is not None:
         query = query.filter(Article.char_count >= min_char_count)
-
     if max_char_count is not None:
         query = query.filter(Article.char_count <= max_char_count)
-
     if min_word_count is not None:
         query = query.filter(Article.word_count >= min_word_count)
-
     if max_word_count is not None:
         query = query.filter(Article.word_count <= max_word_count)
-
+    ### Search Filters
     if search:
         search_term = f"%{search}%"
         query = query.filter(
@@ -84,6 +76,8 @@ def build_article_query(
         query = query.filter(Article.title.ilike(f"%{search_title}%"))
     if search_summary:
         query = query.filter(Article.clean_summary.ilike(f"%{search_summary}%"))
+    if search_keywords:
+        query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
 
     return query
 
