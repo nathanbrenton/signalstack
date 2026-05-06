@@ -81,6 +81,9 @@ def build_article_query(
             | (Article.clean_summary.ilike(search_term))
         )
 
+    if search_title:
+        query = query.filter(Article.title.ilike(f"%{search_title}%"))
+
     return query
 
 ### Function DEFINITION
