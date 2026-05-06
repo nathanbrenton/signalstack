@@ -2,7 +2,12 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from app.db.deps import get_db
-from app.crud.article import create_article, get_articles, count_articles
+from app.crud.article import (
+    create_article,
+    get_articles,
+    count_articles,
+    count_filtered_articles,
+)
 from app.schemas.article import (
     ArticleCreate,
     ArticleRead,
@@ -137,7 +142,8 @@ def list_all(
         page=page,
     )
 
-    total = count_articles(db)
+#    total = count_articles(db)
+    total = count_filtered_articles(db)
     pages = (total + limit - 1) // limit
 
 #    return articles
