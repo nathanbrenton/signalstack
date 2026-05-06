@@ -81,8 +81,6 @@ def get_articles(
     page: int | None = None,
 ) -> list[Article]:
 
-#    query = db.query(Article)
-#    query = build_article_query(db)
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -92,7 +90,6 @@ def get_articles(
 
 
 #   # Filters
-
 ### Search Filters
     if search:
         search_term = f"%{search}%"
@@ -118,14 +115,12 @@ def get_articles(
         )
 ### Inclusion Filters
 
-    if min_quality_score is not None:
-        query = query.filter(Article.quality_score >= min_quality_score)
-
-    if keyword:
-        query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
-
-    if language:
-        query = query.filter(Article.language == language)
+#    if min_quality_score is not None:
+#        query = query.filter(Article.quality_score >= min_quality_score)
+#    if keyword:
+#        query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
+#    if language:
+#        query = query.filter(Article.language == language)
 
     if source_name:
         query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
