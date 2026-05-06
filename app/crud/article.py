@@ -19,13 +19,31 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
 #def build_article_query(
 #    db: Session,
 #):
+#def build_article_query(
+#    db: Session,
+#    min_quality_score: float | None = None,
+#    keyword: str | None = None,
+#    language: str | None = None,
+#):
 def build_article_query(
     db: Session,
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
 ):
-    return db.query(Article)
+    query = db.query(Article)
+
+    if min_quality_score is not None:
+        query = query.filter(Article.quality_score >= min_quality_score)
+
+    if keyword:
+        query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
+
+    if language:
+        query = query.filter(Article.language == language)
+
+    return query
+#    return db.query(Article)
 
 def get_articles(
 ##### Parameters:
@@ -64,7 +82,13 @@ def get_articles(
 ) -> list[Article]:
 
 #    query = db.query(Article)
-    query = build_article_query(db)
+#    query = build_article_query(db)
+    query = build_article_query(
+        db,
+        min_quality_score=min_quality_score,
+        keyword=keyword,
+        language=language,
+    )
 
 
 #   # Filters
