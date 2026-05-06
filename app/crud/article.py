@@ -103,7 +103,7 @@ def build_article_query(
 
     return query
 
-### Function DEFINITION
+### Function def_articles() DEFINITION
 def get_articles(
 ### Parameters:
     db: Session,
@@ -183,13 +183,7 @@ def get_articles(
     if search_source:
         query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
-    ### Exclusion Filters
-    if exclude_keyword:
-        query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
-    if exclude_source:
-        query = query.filter(~Article.source_name.ilike(f"%{exclude_source}%"))
-    if exclude_language:
-        query = query.filter(Article.language != exclude_language)
+    ### Exclusion Filters (moved)
 
     ### Sorting Filters
     if sort_by == "published_at":
