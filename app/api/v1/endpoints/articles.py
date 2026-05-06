@@ -133,5 +133,6 @@ def list_all(
     )
 
     total = count_articles(db)
+    pages = (total + limit - 1) // limit
 
     return articles
