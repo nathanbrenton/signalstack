@@ -56,7 +56,9 @@ def get_articles(
     exclude_language: str | None = None,
     page: int | None = None,
 ) -> list[Article]:
-    query = db.query(Article)
+
+#    query = db.query(Article)
+    query = build_article_query(db)
 
 
 #   # Filters
