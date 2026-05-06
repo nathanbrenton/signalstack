@@ -80,9 +80,10 @@ def build_article_query(
             (Article.title.ilike(search_term))
             | (Article.clean_summary.ilike(search_term))
         )
-
     if search_title:
         query = query.filter(Article.title.ilike(f"%{search_title}%"))
+    if search_summary:
+        query = query.filter(Article.clean_summary.ilike(f"%{search_summary}%"))
 
     return query
 
