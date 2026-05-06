@@ -207,14 +207,6 @@ def get_articles(
     )
 
     ### ### ###  Filters
-
-    ### Search Filters (moved to build)
-    ### Inclusion Filters (moved)
-    ### Date Filters (moved)
-    ### Count/Length Filters (have been moved)
-    ### Search Filters (moved)
-    ### Exclusion Filters (moved)
-
     ### Sorting Filters
     if sort_by == "published_at":
         if order == "asc":
