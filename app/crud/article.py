@@ -23,6 +23,8 @@ def build_article_query(
     language: str | None = None,
     source_name: str | None = None,
     top_keyword: str | None = None,
+    published_after: datetime | None = None,
+    published_before: datetime | None = None,
 ):
     query = db.query(Article)
 
@@ -105,7 +107,6 @@ def get_articles(
     if search_summary:
         query = query.filter(Article.clean_summary.ilike(f"%{search_summary}%"))
 
-
     if search_all:
         term = f"%{search_all}%"
         query = query.filter(
@@ -114,20 +115,18 @@ def get_articles(
             | (Article.keywords.ilike(term))
             | (Article.source_name.ilike(term))
         )
+
 ### Inclusion Filters
-
-#    if min_quality_score is not None:
-#        query = query.filter(Article.quality_score >= min_quality_score)
-#    if keyword:
-#        query = query.filter(Article.keywords.ilike(f"%{keyword}%"))
-#    if language:
-#        query = query.filter(Article.language == language)
-
     if source_name:
         query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
 
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
+
+#    if published_after:
+#        query = query.filter(Article.published_at >= published_after)
+#    if published_before:
+#        query = query.filter(Article.published_at <= published_before)
 
     if published_after:
         query = query.filter(Article.published_at >= published_after)
@@ -219,6 +218,8 @@ def count_filtered_articles(
     language: str | None = None,
     source_name: str | None = None,
     top_keyword: str | None = None,
+    published_after: datetime | None = None,
+    published_before: datetime | None = None,
 ) -> int:
     query = build_article_query(
         db,
@@ -227,6 +228,8 @@ def count_filtered_articles(
         language=language,
         source_name=source_name,
         top_keyword=top_keyword,
+        published_after=published_after,
+        published_before=published_before,
     )
     return query.count()
 

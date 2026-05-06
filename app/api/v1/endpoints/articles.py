@@ -149,6 +149,8 @@ def list_all(
         language=language,
         source_name=source_name,
         top_keyword=top_keyword,
+        published_after=published_after,
+        published_before=published_before,
     )
     pages = (total + limit - 1) // limit
 
