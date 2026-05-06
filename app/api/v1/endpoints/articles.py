@@ -106,7 +106,7 @@ def list_all(
         page=page,
     )
 
-    # Function CALL
+    # Function CALL to count_filtered_articles()
     total = count_filtered_articles(
         db,
         min_quality_score=min_quality_score,
@@ -133,6 +133,9 @@ def list_all(
         search_keywords=search_keywords,
         search_source=search_source,
         search_all=search_all,
+        exclude_keyword=exclude_keyword,
+        exclude_source=exclude_source,
+        exclude_language=exclude_language,
     )
     pages = (total + limit - 1) // limit
 

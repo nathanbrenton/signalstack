@@ -43,6 +43,9 @@ def build_article_query(
     search_keywords: str | None = None,
     search_source: str | None = None,
     search_all: str | None = None,
+    exclude_keyword: str | None = None,
+    exclude_source: str | None = None,
+    exclude_language: str | None = None,
 ):
     query = db.query(Article)
 
@@ -90,6 +93,14 @@ def build_article_query(
             | (Article.source_name.ilike(term))
         )
 
+    # Exclude Filters
+    if exclude_keyword:
+        query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
+    if exclude_source:
+        query = query.filter(~Article.source_name.ilike(f"%{exclude_source}%"))
+    if exclude_language:
+        query = query.filter(Article.language != exclude_language)
+
     return query
 
 ### Function DEFINITION
@@ -129,7 +140,7 @@ def get_articles(
     page: int | None = None,
 ) -> list[Article]:
 
-    # FUNCTION CALL
+    # get_articles() FUNCTION CALL to build_articles_query()
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -143,6 +154,9 @@ def get_articles(
         max_char_count=max_char_count,
         min_word_count=min_word_count,
         max_word_count=max_word_count,
+        exclude_keyword=exclude_keyword,
+        exclude_source=exclude_source,
+        exclude_language=exclude_language,
     )
 
     ### ### ###  Filters
@@ -152,14 +166,12 @@ def get_articles(
     ### Inclusion Filters
     if source_name:
         query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
-
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
 
     ### Date Filters
     if published_after:
         query = query.filter(Article.published_at >= published_after)
-
     if published_before:
         query = query.filter(Article.published_at <= published_before)
 
@@ -168,17 +180,14 @@ def get_articles(
     ### Search Filters
     if search_keywords:
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
-
     if search_source:
         query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
     ### Exclusion Filters
     if exclude_keyword:
         query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
-
     if exclude_source:
         query = query.filter(~Article.source_name.ilike(f"%{exclude_source}%"))
-
     if exclude_language:
         query = query.filter(Article.language != exclude_language)
 
@@ -233,8 +242,11 @@ def count_filtered_articles(
     search_keywords: str | None = None,
     search_source: str | None = None,
     search_all: str | None = None,
+    exclude_keyword: str | None = None,
+    exclude_source: str | None = None,
+    exclude_language: str | None = None,
 ) -> int:
-    # FUNCTION CALL
+    # FUNCTION CALL to build_article_query()
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -261,6 +273,9 @@ def count_filtered_articles(
         search_keywords=search_keywords,
         search_source=search_source,
         search_all=search_all,
+        exclude_keyword=exclude_keyword,
+        exclude_source=exclude_source,
+        exclude_language=exclude_language,
     )
     return query.count()
 
