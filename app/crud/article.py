@@ -16,6 +16,7 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     return db_article
 
 
+# signature / Function DEFINITION
 def build_article_query(
     db: Session,
     min_quality_score: float | None = None,
@@ -36,6 +37,12 @@ def build_article_query(
     max_char_count: int | None = None,
     min_word_count: int | None = None,
     max_word_count: int | None = None,
+    search: str | None = None,
+    search_title: str | None = None,
+    search_summary: str | None = None,
+    search_keywords: str | None = None,
+    search_source: str | None = None,
+    search_all: str | None = None,
 ):
     query = db.query(Article)
 
@@ -67,8 +74,16 @@ def build_article_query(
     if max_word_count is not None:
         query = query.filter(Article.word_count <= max_word_count)
 
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            (Article.title.ilike(search_term))
+            | (Article.clean_summary.ilike(search_term))
+        )
+
     return query
 
+### Function DEFINITION
 def get_articles(
 ### Parameters:
     db: Session,
@@ -105,6 +120,7 @@ def get_articles(
     page: int | None = None,
 ) -> list[Article]:
 
+    # FUNCTION CALL
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -120,9 +136,8 @@ def get_articles(
         max_word_count=max_word_count,
     )
 
-
-### ### ###  Filters
-### Search Filters
+    ### ### ###  Filters
+    ### Search Filters
     if search:
         search_term = f"%{search}%"
         query = query.filter(
@@ -145,42 +160,30 @@ def get_articles(
             | (Article.source_name.ilike(term))
         )
 
-### Inclusion Filters
+    ### Inclusion Filters
     if source_name:
         query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
 
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
 
-### Date Filters
+    ### Date Filters
     if published_after:
         query = query.filter(Article.published_at >= published_after)
 
     if published_before:
         query = query.filter(Article.published_at <= published_before)
 
-### Count/Length Filters
-#   if min_token_count is not None:
-#       query = query.filter(Article.token_count >= min_token_count)
-#   if max_token_count is not None:
-#       query = query.filter(Article.token_count <= max_token_count)
-#   if min_char_count is not None:
-#       query = query.filter(Article.char_count >= min_char_count)
-#   if max_char_count is not None:
-#       query = query.filter(Article.char_count <= max_char_count)
-#   if min_word_count is not None:
-#       query = query.filter(Article.word_count >= min_word_count)
-#   if max_word_count is not None:
-#       query = query.filter(Article.word_count <= max_word_count)
+    ### Count/Length Filters (have been moved)
 
+    ### Search Filters
     if search_keywords:
         query = query.filter(Article.keywords.ilike(f"%{search_keywords}%"))
 
     if search_source:
         query = query.filter(Article.source_name.ilike(f"%{search_source}%"))
 
-### Exclusion Filters
-
+    ### Exclusion Filters
     if exclude_keyword:
         query = query.filter(~Article.keywords.ilike(f"%{exclude_keyword}%"))
 
@@ -190,8 +193,7 @@ def get_articles(
     if exclude_language:
         query = query.filter(Article.language != exclude_language)
 
-### Sorting Filters
-
+    ### Sorting Filters
     if sort_by == "published_at":
         if order == "asc":
             query = query.order_by(Article.published_at.asc().nullslast())
@@ -207,17 +209,15 @@ def get_articles(
         offset = (page - 1) * limit
         query = query.offset(offset)
 
-### Limit / Return
-
+    ### Limit / Return
     return query.limit(limit).all()
-
 
 
 #################################
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
 
-# signature
+# signature / Function DEFINITION
 def count_filtered_articles(
     db: Session,
     min_quality_score: float | None = None,
@@ -238,7 +238,14 @@ def count_filtered_articles(
     max_char_count: int | None = None,
     min_word_count: int | None = None,
     max_word_count: int | None = None,
+    search: str | None = None,
+    search_title: str | None = None,
+    search_summary: str | None = None,
+    search_keywords: str | None = None,
+    search_source: str | None = None,
+    search_all: str | None = None,
 ) -> int:
+    # FUNCTION CALL
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -259,6 +266,12 @@ def count_filtered_articles(
         max_char_count=max_char_count,
         min_word_count=min_word_count,
         max_word_count=max_word_count,
+        search=search,
+        search_title=search_title,
+        search_summary=search_summary,
+        search_keywords=search_keywords,
+        search_source=search_source,
+        search_all=search_all,
     )
     return query.count()
 

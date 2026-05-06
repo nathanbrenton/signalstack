@@ -30,10 +30,10 @@ def article_count(db: Session = Depends(get_db)):
 #@router.get("/articles", response_model=list[ArticleRead])
 @router.get("/articles", response_model=ArticleListResponse)
 
-# The list_all function
+# The list_all Function DEFINITION
 def list_all(
 
-##### Parameters:
+##### Parameters (with type annotations):
     db: Session = Depends(get_db),
     limit: int = Query(10, ge=1, le=100),
     min_quality_score: float | None = Query(None, ge=0),
@@ -70,7 +70,7 @@ def list_all(
 
 
 ##### CRUD passes
-    # The "get_articles" call:
+    # The "get_articles" Function CALL:
     articles = get_articles(
         db,
         limit=limit,
@@ -106,6 +106,7 @@ def list_all(
         page=page,
     )
 
+    # Function CALL
     total = count_filtered_articles(
         db,
         min_quality_score=min_quality_score,
@@ -126,6 +127,12 @@ def list_all(
         max_char_count=max_char_count,
         min_word_count=min_word_count,
         max_word_count=max_word_count,
+        search=search,
+        search_title=search_title,
+        search_summary=search_summary,
+        search_keywords=search_keywords,
+        search_source=search_source,
+        search_all=search_all,
     )
     pages = (total + limit - 1) // limit
 
