@@ -3,7 +3,11 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from app.db.deps import get_db
 from app.crud.article import create_article, get_articles, count_articles
-from app.schemas.article import ArticleCreate, ArticleRead
+from app.schemas.article import (
+    ArticleCreate,
+    ArticleRead,
+    ArticleListResponse,
+)
 
 router = APIRouter()
 
@@ -18,7 +22,8 @@ def article_count(db: Session = Depends(get_db)):
 
 
 # Endpoint
-@router.get("/articles", response_model=list[ArticleRead])
+#@router.get("/articles", response_model=list[ArticleRead])
+@router.get("/articles", response_model=ArticleListResponse)
 
 # The list_all function
 def list_all(
@@ -135,4 +140,16 @@ def list_all(
     total = count_articles(db)
     pages = (total + limit - 1) // limit
 
-    return articles
+#    return articles
+    return {
+        "data": articles,
+        "meta": {
+            "page": page or 1,
+            "limit": limit,
+            "total": total,
+            "pages": pages,
+        },
+    }
+
+
+
