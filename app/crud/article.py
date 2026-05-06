@@ -186,6 +186,11 @@ def get_articles(
 def get_article_by_url(db: Session, url: str) -> Article | None:
     return db.query(Article).filter(Article.url == url).first()
 
+def count_filtered_articles(
+    db: Session,
+) -> int:
+    query = build_article_query(db)
+    return query.count()
 
 def count_articles(db: Session) -> int:
     return db.query(Article).count()
