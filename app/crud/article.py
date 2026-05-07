@@ -223,6 +223,13 @@ def get_articles(
 
     ### ### ###  Filters
     ### Sorting Filters
+    if search and sort_by == "rank":
+        rank = func.ts_rank(
+            func.to_tsvector("english", Article.search_vector),
+            func.plainto_tsquery("english", search),
+        )
+        query = query.order_by(rank.desc())
+        return query.limit(limit).all()
     if sort_by == "published_at":
         if order == "asc":
             query = query.order_by(Article.published_at.asc().nullslast())
