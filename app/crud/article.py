@@ -12,7 +12,6 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     if existing:
         return existing
 
-#   db_article = Article(**article.model_dump())
     article_data = article.model_dump()
     article_data["search_vector"] = (
         f"{article_data.get('title') or ''} "
@@ -217,23 +216,22 @@ def get_articles(
 
     ### ### ###  Filters
     ### Sorting Filters
-#   if search and sort_by == "rank":
-#       rank = func.ts_rank(
-#           func.to_tsvector("english", Article.search_vector),
-#           func.plainto_tsquery("english", search),
-#       )
-#       query = query.order_by(rank.desc())
-#       return query.limit(limit).all()
+    # Rank Branch
     if search and sort_by == "rank":
         rank = func.ts_rank(
             func.to_tsvector("english", Article.search_vector),
             func.plainto_tsquery("english", search),
         ).label("rank")
 
+        query = query.order_by(rank.desc())
+
+        if page and page > 1:
+            offset = (page - 1) * limit
+            query = query.offset(offset)
+
         results = (
             query
             .add_columns(rank)
-            .order_by(rank.desc())
             .limit(limit)
             .all()
         )
