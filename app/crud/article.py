@@ -1,5 +1,6 @@
 # app/crud/article.py
 from datetime import datetime
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.models.article import Article
 from app.schemas.article import ArticleCreate
