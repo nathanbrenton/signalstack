@@ -1,4 +1,5 @@
-from sqlalchemy import Column, DateTime, Float, Integer, String, Text, DateTime
+# app/models/article.py
+from sqlalchemy import Column, DateTime, Float, Integer, String
 from datetime import datetime
 
 from app.db.base import Base
@@ -14,6 +15,7 @@ class Article(Base):
     summary = Column(String, nullable=True)
     summary_hash = Column(String, nullable=True)
     clean_summary = Column(String, nullable=True)
+    search_vector = Column(String, nullable=True)
     keywords = Column(String, nullable=True)
     published_at = Column(DateTime, nullable=True)
     source_name = Column(String, nullable=True)
