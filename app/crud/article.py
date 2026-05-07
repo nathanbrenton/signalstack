@@ -113,11 +113,17 @@ def build_article_query(
         query = query.filter(Article.word_count <= max_word_count)
 
     ### Search Filters
+#   if search:
+#       search_term = f"%{search}%"
+#       query = query.filter(
+#           (Article.title.ilike(search_term))
+#           | (Article.clean_summary.ilike(search_term))
+#       )
     if search:
-        search_term = f"%{search}%"
         query = query.filter(
-            (Article.title.ilike(search_term))
-            | (Article.clean_summary.ilike(search_term))
+            func.to_tsvector("english", Article.search_vector).op("@@")(
+                func.plainto_tsquery("english", search)
+            )
         )
     if search_title:
         query = query.filter(Article.title.ilike(f"%{search_title}%"))
