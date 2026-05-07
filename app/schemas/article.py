@@ -27,6 +27,7 @@ class ArticleCreate(ArticleBase):
 
 class ArticleRead(ArticleBase):
     id: int
+    rank: float | None = None
     created_at: datetime | None = None
 
     class Config:
