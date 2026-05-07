@@ -1,3 +1,4 @@
+# app/crud/article.py
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.models.article import Article
@@ -10,7 +11,14 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
     if existing:
         return existing
 
-    db_article = Article(**article.model_dump())
+#   db_article = Article(**article.model_dump())
+    article_data = article.model_dump()
+    article_data["search_vector"] = (
+        f"{article_data.get('title') or ''} "
+        f"{article_data.get('clean_summary') or ''}"
+    ).strip()
+
+    db_article = Article(**article_data)
     db.add(db_article)
     db.commit()
     db.refresh(db_article)
