@@ -113,12 +113,6 @@ def build_article_query(
         query = query.filter(Article.word_count <= max_word_count)
 
     ### Search Filters
-#   if search:
-#       search_term = f"%{search}%"
-#       query = query.filter(
-#           (Article.title.ilike(search_term))
-#           | (Article.clean_summary.ilike(search_term))
-#       )
     if search:
         query = query.filter(
             func.to_tsvector("english", Article.search_vector).op("@@")(
@@ -223,13 +217,35 @@ def get_articles(
 
     ### ### ###  Filters
     ### Sorting Filters
+#   if search and sort_by == "rank":
+#       rank = func.ts_rank(
+#           func.to_tsvector("english", Article.search_vector),
+#           func.plainto_tsquery("english", search),
+#       )
+#       query = query.order_by(rank.desc())
+#       return query.limit(limit).all()
     if search and sort_by == "rank":
         rank = func.ts_rank(
             func.to_tsvector("english", Article.search_vector),
             func.plainto_tsquery("english", search),
+        ).label("rank")
+
+        results = (
+            query
+            .add_columns(rank)
+            .order_by(rank.desc())
+            .limit(limit)
+            .all()
         )
-        query = query.order_by(rank.desc())
-        return query.limit(limit).all()
+
+        articles = []
+
+        for article, rank_value in results:
+            article.rank = rank_value
+            articles.append(article)
+
+        return articles
+
     if sort_by == "published_at":
         if order == "asc":
             query = query.order_by(Article.published_at.asc().nullslast())
@@ -245,7 +261,7 @@ def get_articles(
         offset = (page - 1) * limit
         query = query.offset(offset)
 
-    ### Limit / Return
+    ### Limit / Return for the rank branch
     return query.limit(limit).all()
 
 
