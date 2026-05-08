@@ -1,6 +1,6 @@
 # app/crud/article.py
 from datetime import datetime
-from sqlalchemy import func
+from sqlalchemy import func, text
 from sqlalchemy.orm import Session
 from app.models.article import Article
 from app.schemas.article import ArticleCreate
@@ -218,8 +218,27 @@ def get_articles(
     ### Sorting Filters
     # Rank Branch
     if search and sort_by == "rank":
+#       rank = func.ts_rank(
+#           func.to_tsvector("english", Article.search_vector),
+#           func.plainto_tsquery("english", search),
+#       ).label("rank")
+        weighted_vector = (
+            func.setweight(
+                func.to_tsvector("english", func.coalesce(Article.title, "")),
+                text("'A'"),
+            ).op("||")(
+                func.setweight(
+                    func.to_tsvector(
+                        "english",
+                        func.coalesce(Article.clean_summary, ""),
+                    ),
+                    text("'B'"),
+                )
+            )
+        )
+
         rank = func.ts_rank(
-            func.to_tsvector("english", Article.search_vector),
+            weighted_vector,
             func.plainto_tsquery("english", search),
         ).label("rank")
 
