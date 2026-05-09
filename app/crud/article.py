@@ -13,16 +13,39 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
         return existing
 
     article_data = article.model_dump()
-    article_text = (
-        f"{article_data.get('title') or ''} "
-        f"{article_data.get('clean_summary') or ''}"
-        f"{article_data.get('keywords') or ''}"
-    ).strip()
-
     article_data.pop("search_vector", None)
 
     db_article = Article(**article_data)
-    db_article.search_vector = func.to_tsvector("english", article_text)
+
+    title_vector = func.setweight(
+        func.to_tsvector(
+            "english",
+            article_data.get("title") or "",
+        ),
+        "A",
+    )
+
+    keywords_vector = func.setweight(
+        func.to_tsvector(
+            "english",
+            article_data.get("keywords") or "",
+        ),
+        "B",
+    )
+
+    summary_vector = func.setweight(
+        func.to_tsvector(
+            "english",
+            article_data.get("clean_summary") or "",
+        ),
+        "C",
+    )
+
+    db_article.search_vector = (
+        title_vector
+        .op("||")(keywords_vector)
+        .op("||")(summary_vector)
+    )
 
     db.add(db_article)
     db.commit()
