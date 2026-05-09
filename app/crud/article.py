@@ -13,12 +13,20 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
         return existing
 
     article_data = article.model_dump()
-    article_data["search_vector"] = (
+#   article_data["search_vector"] = (
+#       f"{article_data.get('title') or ''} "
+#       f"{article_data.get('clean_summary') or ''}"
+#   ).strip()
+    article_text = (
         f"{article_data.get('title') or ''} "
         f"{article_data.get('clean_summary') or ''}"
     ).strip()
 
+    article_data.pop("search_vector", None)
+
     db_article = Article(**article_data)
+    db_article.search_vector = func.to_tsvector("english", article_text)
+
     db.add(db_article)
     db.commit()
     db.refresh(db_article)
