@@ -13,13 +13,10 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
         return existing
 
     article_data = article.model_dump()
-#   article_data["search_vector"] = (
-#       f"{article_data.get('title') or ''} "
-#       f"{article_data.get('clean_summary') or ''}"
-#   ).strip()
     article_text = (
         f"{article_data.get('title') or ''} "
         f"{article_data.get('clean_summary') or ''}"
+        f"{article_data.get('keywords') or ''}"
     ).strip()
 
     article_data.pop("search_vector", None)
