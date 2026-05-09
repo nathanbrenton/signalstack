@@ -245,7 +245,7 @@ def get_articles(
     ### ### ###  Filters
     ### Sorting Filters
     # Rank Branch
-    if search and sort_by == "rank":
+    if search and (sort_by == "rank" or sort_by is None):
 
         rank = func.ts_rank_cd(
             Article.search_vector,
