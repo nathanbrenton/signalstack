@@ -114,7 +114,7 @@ def build_article_query(
     ### Search Filters
     if search:
         query = query.filter(
-            func.to_tsvector("english", Article.search_vector).op("@@")(
+            Article.search_vector.op("@@")(
                 func.plainto_tsquery("english", search)
             )
         )
@@ -218,23 +218,9 @@ def get_articles(
     ### Sorting Filters
     # Rank Branch
     if search and sort_by == "rank":
-        weighted_vector = (
-            func.setweight(
-                func.to_tsvector("english", func.coalesce(Article.title, "")),
-                text("'A'"),
-            ).op("||")(
-                func.setweight(
-                    func.to_tsvector(
-                        "english",
-                        func.coalesce(Article.clean_summary, ""),
-                    ),
-                    text("'B'"),
-                )
-            )
-        )
 
         rank = func.ts_rank(
-            weighted_vector,
+            Article.search_vector,
             func.plainto_tsquery("english", search),
         ).label("rank")
 
