@@ -247,7 +247,7 @@ def get_articles(
     # Rank Branch
     if search and sort_by == "rank":
 
-        rank = func.ts_rank(
+        rank = func.ts_rank_cd(
             Article.search_vector,
             func.plainto_tsquery("english", search),
         ).label("rank")
