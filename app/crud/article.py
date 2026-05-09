@@ -250,6 +250,7 @@ def get_articles(
         rank = func.ts_rank_cd(
             Article.search_vector,
             func.plainto_tsquery("english", search),
+            32,
         ).label("rank")
 
         query = query.order_by(rank.desc())
