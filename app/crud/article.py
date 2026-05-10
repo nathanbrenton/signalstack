@@ -61,6 +61,7 @@ def build_article_query(
     keyword: str | None = None,
     language: str | None = None,
     source_name: str | None = None,
+    ml_category: str | None = None,
     top_keyword: str | None = None,
     published_after: datetime | None = None,
     published_before: datetime | None = None,
@@ -99,6 +100,8 @@ def build_article_query(
         query = query.filter(Article.source_name.ilike(f"%{source_name}%"))
     if top_keyword:
         query = query.filter(Article.top_keyword.ilike(f"%{top_keyword}%"))
+    if ml_category:
+        query = query.filter(Article.ml_category == ml_category)
 
     ### Date Filters
     if published_after:
@@ -195,6 +198,7 @@ def get_articles(
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
+    ml_category: str | None = None,
     source_name: str | None = None,
     top_keyword: str | None = None,
     published_after: datetime | None = None,
@@ -232,6 +236,7 @@ def get_articles(
         keyword=keyword,
         language=language,
         source_name=source_name,
+        ml_category=ml_category,
         top_keyword=top_keyword,
         published_after=published_after,
         published_before=published_before,
@@ -331,6 +336,7 @@ def count_filtered_articles(
     min_quality_score: float | None = None,
     keyword: str | None = None,
     language: str | None = None,
+    ml_category: str | None = None,
     source_name: str | None = None,
     top_keyword: str | None = None,
     published_after: datetime | None = None,
@@ -364,6 +370,7 @@ def count_filtered_articles(
         keyword=keyword,
         language=language,
         source_name=source_name,
+        ml_category=ml_category,
         top_keyword=top_keyword,
         published_after=published_after,
         published_before=published_before,
