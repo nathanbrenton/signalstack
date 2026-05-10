@@ -61,6 +61,11 @@ for article, prediction, probabilities in zip(
     else:
         mismatch_count += 1
 
+    confidence = max(probabilities)
+
+    article.ml_category = prediction
+    article.ml_confidence = float(confidence)
+
     print()
     print("Confidence Scores:")
 
@@ -69,6 +74,8 @@ for article, prediction, probabilities in zip(
         probabilities,
     ):
         print(f"  {category}: {probability:.3f}")
+
+db.commit()
 
 print()
 print("Prediction Summary:")
