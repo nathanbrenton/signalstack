@@ -2,6 +2,7 @@ from datetime import datetime
 from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
+from app.ml.classifier import classify_article_text
 from app.utils.text_cleaning import (
     clean_html_summary,
     detect_language,
@@ -50,6 +51,9 @@ def ingest_feed(db, rss_url):
             keywords,
         )
         top_keyword = keywords[0] if keywords else None
+
+        classification_text = f"{title} {clean_summary}"
+        ml_category = classify_article_text(classification_text)
 
 
         if not title or not url:
@@ -110,6 +114,7 @@ def ingest_feed(db, rss_url):
             top_keyword=top_keyword,
             ingested_at=ingested_at,
             quality_score=quality_score,
+            ml_category=ml_category,
         )
 
         db.add(article)
