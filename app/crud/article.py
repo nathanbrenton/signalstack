@@ -313,7 +313,18 @@ def get_articles(
 
         return articles
 
-    if sort_by == "published_at":
+    if sort_by == "ml_confidence":
+        if order == "asc":
+            query = query.order_by(
+                Article.ml_confidence.asc().nullslast()
+            )
+        else:
+            query = query.order_by(
+                Article.ml_confidence.desc().nullslast()
+            )
+
+    elif sort_by == "published_at":
+
         if order == "asc":
             query = query.order_by(Article.published_at.asc().nullslast())
         else:
