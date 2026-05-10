@@ -2,6 +2,8 @@
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 
 training_documents = [
@@ -37,11 +39,31 @@ training_labels = [
 
 vectorizer = TfidfVectorizer()
 
-training_matrix = vectorizer.fit_transform(training_documents)
+#training_matrix = vectorizer.fit_transform(training_documents)
+#classifier = MultinomialNB()
+#classifier.fit(training_matrix, training_labels)
+x_train, x_test, y_train, y_test = train_test_split(
+    training_documents,
+    training_labels,
+    test_size=0.33,
+    random_state=42,
+)
+
+x_train_matrix = vectorizer.fit_transform(x_train)
+
+x_test_matrix = vectorizer.transform(x_test)
 
 classifier = MultinomialNB()
 
-classifier.fit(training_matrix, training_labels)
+classifier.fit(x_train_matrix, y_train)
+
+predictions = classifier.predict(x_test_matrix)
+
+accuracy = accuracy_score(y_test, predictions)
+
+print()
+print(f"Model Accuracy: {accuracy:.2f}")
+##################################################
 
 
 test_documents = [
@@ -50,13 +72,15 @@ test_documents = [
     "The championship team celebrated the victory",
 ]
 
+#test_matrix = vectorizer.transform(test_documents)
+#predictions = classifier.predict(test_matrix)
 test_matrix = vectorizer.transform(test_documents)
 
-predictions = classifier.predict(test_matrix)
+demo_predictions = classifier.predict(test_matrix)
 
 print("Predictions:")
 
-for document, prediction in zip(test_documents, predictions):
+for document, prediction in zip(test_documents, demo_predictions):
     print()
     print(f"Document: {document}")
     print(f"Predicted Category: {prediction}")
