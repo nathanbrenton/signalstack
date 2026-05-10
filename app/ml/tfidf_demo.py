@@ -23,3 +23,7 @@ print(feature_names)
 print()
 print("TF-IDF Matrix Shape:")
 print(tfidf_matrix.shape)
+
+print()
+print("Dense TF-IDF Matrix:")
+print(tfidf_matrix.toarray())
