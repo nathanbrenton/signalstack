@@ -145,7 +145,7 @@ def build_article_query(
     if search:
         query = query.filter(
             Article.search_vector.op("@@")(
-                func.plainto_tsquery("english", search or phrase_search)
+                ts_query
             )
         )
     if phrase_search:
@@ -260,9 +260,20 @@ def get_articles(
     # Rank Branch
     if (search or phrase_search) and (sort_by == "rank" or sort_by is None):
 
+        if phrase_search:
+            ts_query = func.phraseto_tsquery(
+                "english",
+                phrase_search,
+            )
+        else:
+            ts_query = func.plainto_tsquery(
+                "english",
+                search,
+            )
+
         rank = func.ts_rank_cd(
             Article.search_vector,
-            func.plainto_tsquery("english", search or phrase_search),
+            ts_query,
             32,
         ).label("rank")
 
