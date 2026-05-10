@@ -29,3 +29,4 @@ class Article(Base):
     top_keyword = Column(String, nullable=True)
     quality_score = Column(Float, nullable=True)
     ml_category = Column(String(100), nullable=True)
+    ml_confidence = Column(Float, nullable=True)

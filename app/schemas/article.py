@@ -20,6 +20,7 @@ class ArticleBase(BaseModel):
     ingested_at: datetime | None = None
     quality_score: float | None = None
     ml_category: str | None = None
+    ml_confidence: float | None = None
 
 
 class ArticleCreate(ArticleBase):
