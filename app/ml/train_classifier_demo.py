@@ -120,9 +120,30 @@ test_matrix = vectorizer.transform(test_documents)
 
 demo_predictions = classifier.predict(test_matrix)
 
+prediction_probabilities = classifier.predict_proba(test_matrix)
+
 print("Predictions:")
 
-for document, prediction in zip(test_documents, demo_predictions):
+#for document, prediction in zip(test_documents, demo_predictions):
+#    print()
+#    print(f"Document: {document}")
+#    print(f"Predicted Category: {prediction}")
+
+for document, prediction, probabilities in zip(
+    test_documents,
+    demo_predictions,
+    prediction_probabilities,
+):
     print()
     print(f"Document: {document}")
     print(f"Predicted Category: {prediction}")
+
+    print("Confidence Scores:")
+
+    for category, probability in zip(
+        classifier.classes_,
+        probabilities,
+    ):
+        print(f"  {category}: {probability:.3f}")
+
+
