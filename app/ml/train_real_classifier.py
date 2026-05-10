@@ -45,6 +45,20 @@ print()
 print(f"Documents Loaded: {len(documents)}")
 print(f"Label Counts: {Counter(labels)}")
 
+print()
+print("Category Distribution:")
+
+total_documents = len(labels)
+
+for label, count in Counter(labels).items():
+    percentage = (count / total_documents) * 100
+
+    print(
+        f"{label}: "
+        f"{count} documents "
+        f"({percentage:.1f}%)"
+    )
+
 
 
 x_train, x_test, y_train, y_test = train_test_split(
