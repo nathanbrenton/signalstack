@@ -40,6 +40,8 @@ prediction_probabilities = classifier.predict_proba(
     document_matrix
 )
 
+match_count = 0
+mismatch_count = 0
 
 for article, prediction, probabilities in zip(
     articles,
@@ -54,6 +56,11 @@ for article, prediction, probabilities in zip(
     print(f"Stored Category: {article.ml_category}")
     print(f"Predicted Category: {prediction}")
 
+    if article.ml_category == prediction:
+        match_count += 1
+    else:
+        mismatch_count += 1
+
     print()
     print("Confidence Scores:")
 
@@ -62,3 +69,18 @@ for article, prediction, probabilities in zip(
         probabilities,
     ):
         print(f"  {category}: {probability:.3f}")
+
+print()
+print("Prediction Summary:")
+
+total_predictions = match_count + mismatch_count
+
+agreement_percentage = (
+    (match_count / total_predictions) * 100
+    if total_predictions > 0
+    else 0
+)
+
+print(f"Matches: {match_count}")
+print(f"Mismatches: {mismatch_count}")
+print(f"Agreement: {agreement_percentage:.1f}%")
