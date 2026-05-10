@@ -28,3 +28,4 @@ class Article(Base):
     token_count = Column(Integer, nullable=True)
     top_keyword = Column(String, nullable=True)
     quality_score = Column(Float, nullable=True)
+    ml_category = Column(String(100), nullable=True)
