@@ -145,7 +145,10 @@ def build_article_query(
     if search:
         query = query.filter(
             Article.search_vector.op("@@")(
-                ts_query
+                func.plainto_tsquery(
+                    "english",
+                    search,
+                )
             )
         )
     if phrase_search:
