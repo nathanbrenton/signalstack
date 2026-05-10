@@ -74,12 +74,22 @@ vectorizer = TfidfVectorizer()
 #training_matrix = vectorizer.fit_transform(training_documents)
 #classifier = MultinomialNB()
 #classifier.fit(training_matrix, training_labels)
+
+#x_train, x_test, y_train, y_test = train_test_split(
+#    training_documents,
+#    training_labels,
+#    test_size=0.33,
+#    random_state=42,
+#)
+
 x_train, x_test, y_train, y_test = train_test_split(
     training_documents,
     training_labels,
     test_size=0.33,
     random_state=42,
+    stratify=training_labels,
 )
+
 
 x_train_matrix = vectorizer.fit_transform(x_train)
 
