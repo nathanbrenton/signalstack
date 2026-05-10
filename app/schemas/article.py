@@ -19,6 +19,7 @@ class ArticleBase(BaseModel):
     token_count: int | None = None
     ingested_at: datetime | None = None
     quality_score: float | None = None
+    ml_category: str | None = None
 
 
 class ArticleCreate(ArticleBase):
