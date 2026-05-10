@@ -3,7 +3,7 @@
 from app.db.session import SessionLocal
 from app.models.article import Article
 from collections import Counter
-
+import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -88,3 +88,17 @@ accuracy = accuracy_score(y_test, predictions)
 
 print()
 print(f"Real Dataset Accuracy: {accuracy:.2f}")
+
+joblib.dump(
+    classifier,
+    "app/ml/models/article_classifier.joblib",
+)
+
+joblib.dump(
+    vectorizer,
+    "app/ml/models/article_vectorizer.joblib",
+)
+
+print()
+print("Model artifacts saved.")
+
