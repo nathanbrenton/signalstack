@@ -19,6 +19,22 @@ training_documents = [
 
     "The election campaign focused on healthcare policy",
     "Congress voted on the new legislation",
+
+    "Software developers build applications with code",
+    "Cloud computing platforms support data pipelines",
+    "Neural networks learn patterns from large datasets",
+
+    "Financial markets responded to inflation data",
+    "The company reported quarterly revenue growth",
+    "Banking executives discussed interest rates",
+
+    "The baseball player hit a home run",
+    "The soccer league announced a new tournament",
+    "The coach prepared the team for the game",
+
+    "Lawmakers debated the national budget",
+    "The governor signed a public policy bill",
+    "Voters prepared for the presidential election",
 ]
 
 training_labels = [
@@ -32,6 +48,22 @@ training_labels = [
     "sports",
     "sports",
 
+    "politics",
+    "politics",
+
+    "technology",
+    "technology",
+    "technology",
+
+    "business",
+    "business",
+    "business",
+
+    "sports",
+    "sports",
+    "sports",
+
+    "politics",
     "politics",
     "politics",
 ]
