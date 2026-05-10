@@ -55,6 +55,7 @@ def create_article(db: Session, article: ArticleCreate) -> Article:
 
 # signature / build_article_query() Function DEFINITION
 def build_article_query(
+    # PARAMETERS
     db: Session,
     min_quality_score: float | None = None,
     keyword: str | None = None,
@@ -75,6 +76,7 @@ def build_article_query(
     min_word_count: int | None = None,
     max_word_count: int | None = None,
     search: str | None = None,
+    phrase_search: str | None = None,
     search_title: str | None = None,
     search_summary: str | None = None,
     search_keywords: str | None = None,
@@ -146,6 +148,15 @@ def build_article_query(
                 func.plainto_tsquery("english", search)
             )
         )
+    if phrase_search:
+        query = query.filter(
+            Article.search_vector.op("@@")(
+                func.phraseto_tsquery(
+                    "english",
+                    phrase_search,
+                )
+            )
+        )
     if search_title:
         query = query.filter(Article.title.ilike(f"%{search_title}%"))
     if search_summary:
@@ -175,7 +186,7 @@ def build_article_query(
 
 ### Function get_articles() DEFINITION
 def get_articles(
-    ### Parameters:
+    ### PARAMETERS:
     db: Session,
     limit: int = 10,
     min_quality_score: float | None = None,
@@ -199,6 +210,7 @@ def get_articles(
     min_word_count: int | None = None,
     max_word_count: int | None = None,
     search: str | None = None,
+    phrase_search: str | None = None,
     search_title: str | None = None,
     search_summary: str | None = None,
     search_keywords: str | None = None,
@@ -232,6 +244,7 @@ def get_articles(
         min_word_count=min_word_count,
         max_word_count=max_word_count,
         search=search,
+        phrase_search=phrase_search,
         search_title=search_title,
         search_summary=search_summary,
         search_keywords=search_keywords,
@@ -299,6 +312,7 @@ def get_article_by_url(db: Session, url: str) -> Article | None:
 
 # signature / Function DEFINITION
 def count_filtered_articles(
+    # PARAMETERS:
     db: Session,
     min_quality_score: float | None = None,
     keyword: str | None = None,
@@ -319,6 +333,7 @@ def count_filtered_articles(
     min_word_count: int | None = None,
     max_word_count: int | None = None,
     search: str | None = None,
+    phrase_search: str | None = None,
     search_title: str | None = None,
     search_summary: str | None = None,
     search_keywords: str | None = None,
@@ -328,7 +343,7 @@ def count_filtered_articles(
     exclude_source: str | None = None,
     exclude_language: str | None = None,
 ) -> int:
-    # FUNCTION CALL to build_article_query()
+    # count_filtered_articles() FUNCTION CALL to build_article_query()
     query = build_article_query(
         db,
         min_quality_score=min_quality_score,
@@ -350,6 +365,7 @@ def count_filtered_articles(
         min_word_count=min_word_count,
         max_word_count=max_word_count,
         search=search,
+        phrase_search=phrase_search,
         search_title=search_title,
         search_summary=search_summary,
         search_keywords=search_keywords,
