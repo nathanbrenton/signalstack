@@ -1,5 +1,5 @@
 # app/ml/predict_real_articles.py
-
+from datetime import datetime
 import joblib
 
 from app.db.session import SessionLocal
@@ -43,6 +43,7 @@ prediction_probabilities = classifier.predict_proba(
 match_count = 0
 mismatch_count = 0
 
+# INFERENCE LOOP
 for article, prediction, probabilities in zip(
     articles,
     predictions,
@@ -65,6 +66,7 @@ for article, prediction, probabilities in zip(
 
     article.ml_category = prediction
     article.ml_confidence = float(confidence)
+    article.ml_last_classified_at = datetime.utcnow()
 
     print()
     print("Confidence Scores:")
