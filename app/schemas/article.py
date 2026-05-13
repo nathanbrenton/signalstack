@@ -19,8 +19,10 @@ class ArticleBase(BaseModel):
     token_count: int | None = None
     ingested_at: datetime | None = None
     quality_score: float | None = None
+    # ML enrichment fields
     ml_category: str | None = None
     ml_confidence: float | None = None
+    ml_last_classified_at: datetime | None = None
 
 
 class ArticleCreate(ArticleBase):

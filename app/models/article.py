@@ -30,3 +30,4 @@ class Article(Base):
     quality_score = Column(Float, nullable=True)
     ml_category = Column(String(100), nullable=True)
     ml_confidence = Column(Float, nullable=True)
+    ml_last_classified_at = Column(DateTime, nullable=True)
