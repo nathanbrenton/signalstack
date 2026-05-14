@@ -6,14 +6,6 @@ from app.models.article import Article
 from app.ml.inference import predict_article_category
 
 
-#classifier = joblib.load(
-#    "app/ml/models/article_classifier.joblib"
-#)
-#vectorizer = joblib.load(
-#    "app/ml/models/article_vectorizer.joblib"
-#)
-
-
 db = SessionLocal()
 
 articles = (
@@ -24,29 +16,8 @@ articles = (
     .all()
 )
 
-
-#documents = [
-#    article.clean_summary
-#    for article in articles
-#]
-
-
-#document_matrix = vectorizer.transform(documents)
-#predictions = classifier.predict(document_matrix)
-#prediction_probabilities = classifier.predict_proba(
-#    document_matrix
-#)
-
 match_count = 0
 mismatch_count = 0
-
-# INFERENCE LOOP
-# zip(...) loop signature
-#for article, prediction, probabilities in zip(
-#    articles,
-#    predictions,
-#    prediction_probabilities,
-#):
 
 for article in articles:
     print()
@@ -66,7 +37,6 @@ for article in articles:
     else:
         mismatch_count += 1
 
-#    confidence = max(probabilities)
 
     article.ml_category = prediction
     article.ml_confidence = float(confidence)
@@ -74,13 +44,6 @@ for article in articles:
 
     print()
 
-##    print("Confidence Scores:")
-##
-##    for category, probability in zip(
-##        classifier.classes_,
-##        probabilities,
-##    ):
-##        print(f"  {category}: {probability:.3f}")
 
 db.commit()
 
