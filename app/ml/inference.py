@@ -4,6 +4,8 @@ import joblib
 
 MODEL_VERSION = "1.0"
 
+
+# Persisted ML artifacts
 classifier = joblib.load(
     "app/ml/models/article_classifier.joblib"
 )
@@ -12,10 +14,14 @@ vectorizer = joblib.load(
     "app/ml/models/article_vectorizer.joblib"
 )
 
-### FUNCTION
+
+
 def predict_article_category(
     text: str,
 ) -> tuple[str, float]:
+    """
+    Predict the highest-quality article category.
+    """
 
     document_matrix = vectorizer.transform([text])
 
@@ -31,10 +37,14 @@ def predict_article_category(
 
     return prediction, float(confidence)
 
-### FUNCTION
+
+
 def predict_article_probabilities(
     text: str,
 ) -> dict[str, float]:
+    """
+    Return probability scores for all article categories.
+    """
 
     document_matrix = vectorizer.transform([text])
 
