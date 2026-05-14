@@ -11,7 +11,7 @@ vectorizer = joblib.load(
     "app/ml/models/article_vectorizer.joblib"
 )
 
-
+### FUNCTION
 def predict_article_category(
     text: str,
 ) -> tuple[str, float]:
@@ -30,3 +30,23 @@ def predict_article_category(
 
     return prediction, float(confidence)
 
+### FUNCTION
+def predict_article_probabilities(
+    text: str,
+) -> dict[str, float]:
+
+    document_matrix = vectorizer.transform([text])
+
+    probabilities = classifier.predict_proba(
+        document_matrix
+    )[0]
+
+    probability_map = {}
+
+    for category, probability in zip(
+        classifier.classes_,
+        probabilities,
+    ):
+        probability_map[category] = float(probability)
+
+    return probability_map
