@@ -11,5 +11,5 @@ api_router = APIRouter()
 # REGISTER
 api_router.include_router(health.router, tags=["health"])
 api_router.include_router(articles.router, tags=["articles"])
-api_router.include_router(ml.router)
-api_router.include_router(ml_health.router)
+api_router.include_router(ml.router, tags=["ml"])
+api_router.include_router(ml_health.router, tags=["ml"])
