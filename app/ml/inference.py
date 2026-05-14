@@ -2,6 +2,7 @@
 
 import joblib
 
+MODEL_VERSION = "1.0"
 
 classifier = joblib.load(
     "app/ml/models/article_classifier.joblib"

@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.ml.inference import (
+    MODEL_VERSION,
     predict_article_category,
     predict_article_probabilities,
 )
@@ -37,4 +38,5 @@ def predict(
         "category": category,
         "confidence": confidence,
         "probabilities": probabilities,
+        "model_version": MODEL_VERSION,
     }
