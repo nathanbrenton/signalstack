@@ -1,4 +1,4 @@
-# endpoints/m1.py
+# app/api/v1/endpoints/m1.py
 # Purpose: defines the RESPONSE STRUCTURE
 import time
 from fastapi import APIRouter
@@ -17,14 +17,11 @@ from app.schemas.ml import (
 
 router = APIRouter()
 
-# FYI: ENDPOINT = DECORATOR + Function DEFINITION
-# DECORATOR (metadata attached to the function)
 @router.post(
     "/ml/predict",
     response_model=ArticlePredictionResponse,
 )
 
-### python Function DEFINITION  ENDPOINT
 def predict(
     request: ArticlePredictionRequest,
 ):
@@ -42,7 +39,6 @@ def predict(
         time.perf_counter() - start_time
     ) * 1000
 
-    ### RETURN DICTIONARY BLOCK
     return {
         "category": category,
         "confidence": confidence,
