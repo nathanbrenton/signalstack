@@ -1,18 +1,17 @@
 # app/ml/predict_real_articles.py
 from datetime import datetime
-import joblib
 
 from app.db.session import SessionLocal
 from app.models.article import Article
+from app.ml.inference import predict_article_category
 
 
-classifier = joblib.load(
-    "app/ml/models/article_classifier.joblib"
-)
-
-vectorizer = joblib.load(
-    "app/ml/models/article_vectorizer.joblib"
-)
+#classifier = joblib.load(
+#    "app/ml/models/article_classifier.joblib"
+#)
+#vectorizer = joblib.load(
+#    "app/ml/models/article_vectorizer.joblib"
+#)
 
 
 db = SessionLocal()
@@ -26,32 +25,37 @@ articles = (
 )
 
 
-documents = [
-    article.clean_summary
-    for article in articles
-]
+#documents = [
+#    article.clean_summary
+#    for article in articles
+#]
 
 
-document_matrix = vectorizer.transform(documents)
-
-predictions = classifier.predict(document_matrix)
-
-prediction_probabilities = classifier.predict_proba(
-    document_matrix
-)
+#document_matrix = vectorizer.transform(documents)
+#predictions = classifier.predict(document_matrix)
+#prediction_probabilities = classifier.predict_proba(
+#    document_matrix
+#)
 
 match_count = 0
 mismatch_count = 0
 
 # INFERENCE LOOP
-for article, prediction, probabilities in zip(
-    articles,
-    predictions,
-    prediction_probabilities,
-):
+# zip(...) loop signature
+#for article, prediction, probabilities in zip(
+#    articles,
+#    predictions,
+#    prediction_probabilities,
+#):
+
+for article in articles:
     print()
     print(f"Article ID: {article.id}")
     print(f"Title: {article.title}")
+
+    prediction, confidence = predict_article_category(
+        article.clean_summary
+    )
 
     print()
     print(f"Stored Category: {article.ml_category}")
@@ -62,20 +66,21 @@ for article, prediction, probabilities in zip(
     else:
         mismatch_count += 1
 
-    confidence = max(probabilities)
+#    confidence = max(probabilities)
 
     article.ml_category = prediction
     article.ml_confidence = float(confidence)
     article.ml_last_classified_at = datetime.utcnow()
 
     print()
-    print("Confidence Scores:")
 
-    for category, probability in zip(
-        classifier.classes_,
-        probabilities,
-    ):
-        print(f"  {category}: {probability:.3f}")
+##    print("Confidence Scores:")
+##
+##    for category, probability in zip(
+##        classifier.classes_,
+##        probabilities,
+##    ):
+##        print(f"  {category}: {probability:.3f}")
 
 db.commit()
 
