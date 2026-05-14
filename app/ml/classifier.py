@@ -1,4 +1,5 @@
 # app/ml/classifier.py
+# Rule-based weak-supervision classifier for bootstrapping article categories.
 
 TECH_KEYWORDS = {
     "ai",
@@ -47,6 +48,9 @@ SPORTS_KEYWORDS = {
 
 
 def classify_article_text(text: str | None) -> str:
+    """
+    Classify article text using deterministic keyword matching.
+    """
     if not text:
         return "unknown"
 
