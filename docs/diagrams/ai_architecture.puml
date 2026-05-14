@@ -1,0 +1,56 @@
+@startuml
+title SignalStack AI Architecture
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+actor User
+
+package "FastAPI API Layer" {
+  [POST /api/v1/ml/predict] as PredictAPI
+  [GET /api/v1/ml/health] as HealthAPI
+  [GET /api/v1/articles] as ArticlesAPI
+}
+
+package "ML Service Layer" {
+  [Inference Service\napp/ml/inference.py] as Inference
+  [Rule-Based Classifier\napp/ml/classifier.py] as RuleClassifier
+  [Training Pipeline\napp/ml/train_real_classifier.py] as Training
+}
+
+package "ML Artifacts" {
+  [article_classifier.joblib] as ClassifierArtifact
+  [article_vectorizer.joblib] as VectorizerArtifact
+}
+
+package "News Pipeline" {
+  [RSS Ingestion\napp/ingestion/fetch_rss.py] as RSS
+  [Text Cleaning + Keywords\napp/utils/text_cleaning.py] as Cleaning
+}
+
+database "PostgreSQL\narticles table" as DB
+
+User --> PredictAPI
+User --> ArticlesAPI
+
+PredictAPI --> Inference
+HealthAPI --> ClassifierArtifact
+HealthAPI --> VectorizerArtifact
+
+Inference --> ClassifierArtifact
+Inference --> VectorizerArtifact
+
+RSS --> Cleaning
+Cleaning --> RuleClassifier
+RuleClassifier --> DB
+
+Training --> DB
+Training --> ClassifierArtifact
+Training --> VectorizerArtifact
+
+Inference --> DB : optional enrichment jobs
+ArticlesAPI --> DB
+
+DB --> ArticlesAPI : articles + ml_category\nml_confidence\nml_last_classified_at
+
+@enduml

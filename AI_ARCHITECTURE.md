@@ -1,4 +1,5 @@
 # SignalStack AI Architecture
+SignalStack is an AI-enhanced news intelligence platform built to demonstrate production-style backend engineering, PostgreSQL search architecture, and practical machine learning workflows.
 
 ## Overview
 
@@ -160,7 +161,8 @@ Example:
 
 ---
 
-# Current Limitations
+# Current ML Limitations
+- weakly supervised bootstrap training labels
 
 Current classifier limitations include:
 
@@ -193,3 +195,17 @@ Future improvements may include:
 - Docker Compose
 - TF-IDF NLP pipelines
 - Naive Bayes classification
+
+# Production Engineering Concepts
+
+SignalStack demonstrates:
+
+- reusable inference service layers
+- persisted ML model artifacts
+- inference latency monitoring
+- AI subsystem health checks
+- hybrid search + ML retrieval
+- PostgreSQL AI enrichment persistence
+- confidence-aware filtering
+- API-first backend architecture
+- modular query-builder design
