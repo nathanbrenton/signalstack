@@ -1,15 +1,18 @@
 # app/ml/train_real_classifier.py
+# Train a TF-IDF + Naive Bayes article classifier.
+
+from collections import Counter
+
+import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
 
 from app.db.session import SessionLocal
 from app.models.article import Article
-from collections import Counter
-import joblib
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.naive_bayes import MultinomialNB
 
-
+# Load training data
 db = SessionLocal()
 
 articles = (
@@ -21,6 +24,7 @@ articles = (
 )
 
 
+# Filter undersized classes
 documents = []
 labels = []
 
@@ -70,6 +74,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 
 
+# TF-IDF feature extraction
 vectorizer = TfidfVectorizer()
 
 x_train_matrix = vectorizer.fit_transform(x_train)
@@ -77,11 +82,13 @@ x_train_matrix = vectorizer.fit_transform(x_train)
 x_test_matrix = vectorizer.transform(x_test)
 
 
+# Model training
 classifier = MultinomialNB()
 
 classifier.fit(x_train_matrix, y_train)
 
 
+# Evaluation
 predictions = classifier.predict(x_test_matrix)
 
 accuracy = accuracy_score(y_test, predictions)
@@ -89,6 +96,8 @@ accuracy = accuracy_score(y_test, predictions)
 print()
 print(f"Real Dataset Accuracy: {accuracy:.2f}")
 
+
+# Persist trained artifacts
 joblib.dump(
     classifier,
     "app/ml/models/article_classifier.joblib",
