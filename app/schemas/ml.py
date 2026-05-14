@@ -11,4 +11,5 @@ class ArticlePredictionResponse(BaseModel):
     confidence: float
     probabilities: dict[str, float]
     model_version: str
+    inference_time_ms: float
 
