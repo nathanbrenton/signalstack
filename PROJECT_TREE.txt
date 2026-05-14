@@ -1,0 +1,93 @@
+.
+├── AI_ARCHITECTURE.md
+├── alembic
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       ├── 04bc4081ddab_add_token_count_to_articles.py
+│       ├── 21066a3272af_add_ml_category_to_articles.py
+│       ├── 22c33e514dc0_add_top_keyword_to_articles.py
+│       ├── 236f0a21245c_add_search_vector_gin_index.py
+│       ├── 31efc9813377_add_quality_score_to_articles.py
+│       ├── 37ef7f3c97da_add_ml_classification_timestamp.py
+│       ├── 3da432f28370_add_language_to_articles.py
+│       ├── 49d06ee78363_fix_search_vector_gin_index.py
+│       ├── 4b2d72f3788d_add_created_at_to_articles.py
+│       ├── 695ab6200d50_add_word_count_to_articles.py
+│       ├── 768c9983037c_add_source_name_to_articles.py
+│       ├── 81909758de72_add_published_at_to_articles.py
+│       ├── 8fa235e3e0d5_add_normalized_title_to_articles.py
+│       ├── 9233d2e75013_add_keywords_to_article.py
+│       ├── 94b5955cb712_create_articles_table.py
+│       ├── 96276662b374_convert_search_vector_to_tsvector.py
+│       ├── 9785239653db_add_summary_hash_to_articles.py
+│       ├── a2a4c21f6c20_add_clean_summary_to_articles.py
+│       ├── b8ec71787004_add_summary_to_articles.py
+│       ├── d4fc85cd0acd_add_ingested_at_to_articles.py
+│       ├── da2495df36f2_add_summary_hash_index.py
+│       ├── dccea5522687_add_search_vector_to_articles.py
+│       ├── f816beef15d3_add_char_count_to_articles.py
+│       └── fab09bff5fb5_add_ml_confidence_to_articles.py
+├── alembic.ini
+├── app
+│   ├── api
+│   │   ├── __init__.py
+│   │   └── v1
+│   │       ├── endpoints
+│   │       │   ├── articles.py
+│   │       │   ├── health.py
+│   │       │   ├── ml_health.py
+│   │       │   └── ml.py
+│   │       ├── __init__.py
+│   │       └── router.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   └── rss_feeds.py
+│   ├── core
+│   │   ├── config.py
+│   │   └── __init__.py
+│   ├── crud
+│   │   ├── article.py
+│   │   └── __init__.py
+│   ├── db
+│   │   ├── base.py
+│   │   ├── deps.py
+│   │   ├── __init__.py
+│   │   └── session.py
+│   ├── ingestion
+│   │   ├── fetch_rss.py
+│   │   └── __init__.py
+│   ├── __init__.py
+│   ├── main.py
+│   ├── ml
+│   │   ├── classifier.py
+│   │   ├── export_training_data.py
+│   │   ├── inference.py
+│   │   ├── __init__.py
+│   │   ├── models
+│   │   │   ├── article_classifier.joblib
+│   │   │   └── article_vectorizer.joblib
+│   │   ├── predict_article.py
+│   │   ├── predict_real_articles.py
+│   │   ├── tfidf_demo.py
+│   │   ├── train_classifier_demo.py
+│   │   └── train_real_classifier.py
+│   ├── models
+│   │   ├── article.py
+│   │   └── __init__.py
+│   ├── schemas
+│   │   ├── article.py
+│   │   ├── __init__.py
+│   │   └── ml.py
+│   └── utils
+│       ├── test_text_cleaning_manual.py
+│       └── text_cleaning.py
+├── docker-compose.yaml
+├── .env
+├── .gitignore
+├── PROJECT_TREE.txt
+├── README_test.txt
+└── requirements.txt
+
+17 directories, 74 files
