@@ -9,6 +9,7 @@ from app.crud.article import (
     count_articles,
     count_filtered_articles,
 )
+from app.ml.article_similarity import find_similar_articles
 from app.schemas.article import (
     ArticleCreate,
     ArticleRead,
@@ -18,19 +19,45 @@ from app.schemas.article import (
 router = APIRouter()
 
 
+# Endpoint
+
 @router.post("/articles", response_model=ArticleRead)
 def create(article: ArticleCreate, db: Session = Depends(get_db)):
     return create_article(db, article)
+
 
 @router.get("/articles/count")
 def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
 
 
-# Endpoint
-#@router.get("/articles", response_model=list[ArticleRead])
-@router.get("/articles", response_model=ArticleListResponse)
+@router.get("/articles/{article_id}/similar")
+def similar_articles(
+    article_id: int,
+    limit: int = Query(5, ge=1, le=20),
+):
+    results = find_similar_articles(
+        article_id,
+        limit=limit,
+    )
 
+    return {
+        "article_id": article_id,
+        "results": [
+            {
+                "id": article.id,
+                "title": article.title,
+                "url": article.url,
+                "similarity": similarity,
+                "ml_category": article.ml_category,
+                "ml_confidence": article.ml_confidence,
+            }
+            for article, similarity in results
+        ],
+    }
+
+
+@router.get("/articles", response_model=ArticleListResponse)
 # The list_all Function DEFINITION
 def list_all(
 
