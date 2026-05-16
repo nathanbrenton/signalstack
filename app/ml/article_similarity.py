@@ -1,15 +1,10 @@
 # Semantic article similarity retrieval.
-
 from sklearn.metrics.pairwise import cosine_similarity
-
-from app.db.session import SessionLocal
 from app.models.article import Article
 
 
-db = SessionLocal()
-
-
 def find_similar_articles(
+    db,
     article_id: int,
     limit: int = 5,
 ) -> list[tuple[Article, float]]:

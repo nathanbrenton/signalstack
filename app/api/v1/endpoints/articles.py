@@ -34,9 +34,11 @@ def article_count(db: Session = Depends(get_db)):
 @router.get("/articles/{article_id}/similar")
 def similar_articles(
     article_id: int,
+    db: Session = Depends(get_db),
     limit: int = Query(5, ge=1, le=20),
 ):
     results = find_similar_articles(
+        db,
         article_id,
         limit=limit,
     )
