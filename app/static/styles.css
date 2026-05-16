@@ -107,3 +107,18 @@ pre,
     line-height: 1.5;
     color: #cbd5e1;
 }
+
+.search-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-controls input {
+    flex: 1;
+    min-width: 220px;
+}
+
+.search-controls button {
+    white-space: nowrap;
+}

@@ -5,101 +5,115 @@
     <title>SignalStack Demo</title>
     <link rel="stylesheet" href="/demo/styles.css">
 </head>
+
 <body>
+    <main>
+        <header>
+            <h1>SignalStack</h1>
 
-<main>
-    <header>
-        <h1>SignalStack</h1>
-        <p>AI-Powered News Intelligence API</p>
-    </header>
+            <p>
+                AI-Powered News Intelligence API
+            </p>
+        </header>
 
-    <section>
-        <h2>System Status</h2>
-        <button id="health-button">Check API Health</button>
+        <section>
+            <h2>System Status</h2>
 
-        <pre id="health-output"></pre>
-    </section>
+            <button id="health-button">
+                Check API Health
+            </button>
 
-    <section>
-        <h2>Article Keyword Search</h2>
+            <pre id="health-output"></pre>
+        </section>
 
-        <input
-            type="text"
-            id="keyword-search-input"
-            placeholder="Search articles by keyword"
-        >
+        <section>
+            <h2>Article Keyword Search</h2>
 
-        <button id="keyword-search-button">
-            Search
-        </button>
+            <div class="search-controls">
+                <input
+                    type="text"
+                    id="keyword-search-input"
+                    placeholder="Search articles by keyword"
+                >
 
-        <div id="keyword-search-results"></div>
-    </section>
+                <button id="keyword-search-button">
+                    Search
+                </button>
+            </div>
 
-    <section>
-        <h2>Semantic Search</h2>
+            <div id="keyword-search-results"></div>
+        </section>
 
-        <input
-            type="text"
-            id="semantic-search-input"
-            placeholder="Search by meaning/context"
-        >
+        <section>
+            <h2>Semantic Search</h2>
 
-        <button id="semantic-search-button">
-            Semantic Search
-        </button>
+            <div class="search-controls">
+                <input
+                    type="text"
+                    id="semantic-search-input"
+                    placeholder="Search by meaning/context"
+                >
 
-        <div id="semantic-search-results"></div>
-    </section>
+                <button id="semantic-search-button">
+                    Semantic Search
+                </button>
+            </div>
 
-    <section>
-        <h2>Hybrid Search</h2>
+            <div id="semantic-search-results"></div>
+        </section>
 
-        <input
-            type="text"
-            id="hybrid-search-input"
-            placeholder="Hybrid keyword + semantic search"
-        >
+        <section>
+            <h2>Hybrid Search</h2>
 
-        <button id="hybrid-search-button">
-            Hybrid Search
-        </button>
+            <div class="search-controls">
+                <input
+                    type="text"
+                    id="hybrid-search-input"
+                    placeholder="Hybrid keyword + semantic search"
+                >
 
-        <div id="hybrid-search-results"></div>
-    </section>
+                <button id="hybrid-search-button">
+                    Hybrid Search
+                </button>
+            </div>
 
-    <section>
-        <h2>ML Prediction</h2>
+            <div id="hybrid-search-results"></div>
+        </section>
 
-        <textarea
-            id="ml-predict-input"
-            rows="6"
-            placeholder="Enter article text for ML classification"
-        ></textarea>
+        <section>
+            <h2>ML Prediction</h2>
 
-        <button id="ml-predict-button">
-            Predict Category
-        </button>
+            <textarea
+                id="ml-predict-input"
+                rows="6"
+                placeholder="Enter article text for ML classification"
+            ></textarea>
 
-        <pre id="ml-predict-output"></pre>
-    </section>
+            <button id="ml-predict-button">
+                Predict Category
+            </button>
 
-    <section>
-        <h2>Related Articles</h2>
+            <pre id="ml-predict-output"></pre>
+        </section>
 
-        <input
-            type="number"
-            id="related-article-id-input"
-            placeholder="Article ID"
-        >
+        <section>
+            <h2>Related Articles</h2>
 
-        <button id="related-articles-button">
-            Find Related Articles
-        </button>
+            <div class="search-controls">
+                <input
+                    type="number"
+                    id="related-article-id-input"
+                    placeholder="Article ID"
+                >
 
-        <div id="related-articles-results"></div>
-    </section>
-</main>
+                <button id="related-articles-button">
+                    Find Related Articles
+                </button>
+            </div>
+
+            <div id="related-articles-results"></div>
+        </section>
+    </main>
 
     <script src="/demo/app.js"></script>
 </body>
