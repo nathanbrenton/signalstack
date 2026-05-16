@@ -1,6 +1,6 @@
 # Article clustering demo using embeddings.
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from sklearn.cluster import KMeans
 
@@ -48,6 +48,7 @@ print()
 print("Cluster Results")
 print()
 
+### Cluster Loop
 for cluster_id, cluster_articles in clusters.items():
 
     print(
@@ -66,6 +67,35 @@ for cluster_id, cluster_articles in clusters.items():
     print(
         "================================"
     )
+
+    keyword_counter = Counter()
+
+    for article in cluster_articles:
+
+        if not article.keywords:
+            continue
+
+        keywords = [
+            keyword.strip()
+            for keyword in article.keywords.split(",")
+            if keyword.strip()
+        ]
+
+for keyword in keywords:
+    keyword_counter[keyword] += 1
+
+    top_keywords = [
+        keyword
+        for keyword, count
+        in keyword_counter.most_common(5)
+    ]
+
+    print(
+        f"Top Keywords: "
+        f"{top_keywords}"
+    )
+
+    print()
 
     for article in cluster_articles[:10]:
         print(article.title)
