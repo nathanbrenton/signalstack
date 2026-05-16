@@ -51,6 +51,9 @@ def similar_articles(
 
     return {
         "article_id": article_id,
+        "limit": limit,
+        "min_similarity": min_similarity,
+        "result_count": len(results),
         "results": [
             {
                 "id": article.id,
