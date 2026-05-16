@@ -1,6 +1,9 @@
 // SignalStack frontend controller.
 // This file connects the static demo UI to the FastAPI backend endpoints.
 
+
+// Helper functions
+
 function createTimingDiv(resultCount, duration) {
     const timingDiv = document.createElement("div");
 
@@ -40,6 +43,14 @@ function createArticleTitle(article) {
             </a>
         </h3>
     `;
+}
+
+function addEnterKeyListener(inputElement, callback) {
+    inputElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            callback();
+        }
+    });
 }
 
 
@@ -424,3 +435,23 @@ relatedArticlesButton.addEventListener("click", async () => {
             "Error loading related articles.";
     }
 });
+
+addEnterKeyListener(
+    keywordSearchInput,
+    () => keywordSearchButton.click()
+);
+
+addEnterKeyListener(
+    semanticSearchInput,
+    () => semanticSearchButton.click()
+);
+
+addEnterKeyListener(
+    hybridSearchInput,
+    () => hybridSearchButton.click()
+);
+
+addEnterKeyListener(
+    relatedArticleIdInput,
+    () => relatedArticlesButton.click()
+);
