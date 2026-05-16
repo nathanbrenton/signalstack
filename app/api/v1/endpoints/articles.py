@@ -10,6 +10,7 @@ from app.crud.article import (
     count_filtered_articles,
 )
 from app.ml.article_similarity import find_similar_articles
+from app.ml.semantic_search import semantic_search
 from app.schemas.article import (
     ArticleCreate,
     ArticleRead,
@@ -29,6 +30,43 @@ def create(article: ArticleCreate, db: Session = Depends(get_db)):
 @router.get("/articles/count")
 def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
+
+
+@router.get("/articles/semantic-search")
+def semantic_article_search(
+    query: str,
+    db: Session = Depends(get_db),
+    limit: int = Query(5, ge=1, le=20),
+    min_similarity: float = Query(
+        0.0,
+        ge=-1.0,
+        le=1.0,
+    ),
+):
+    results = semantic_search(
+        db,
+        query,
+        limit=limit,
+        min_similarity=min_similarity,
+    )
+
+    return {
+        "query": query,
+        "limit": limit,
+        "min_similarity": min_similarity,
+        "result_count": len(results),
+        "results": [
+            {
+                "id": article.id,
+                "title": article.title,
+                "url": article.url,
+                "similarity": similarity,
+                "ml_category": article.ml_category,
+                "ml_confidence": article.ml_confidence,
+            }
+            for article, similarity in results
+        ],
+    }
 
 
 @router.get("/articles/{article_id}/similar")
