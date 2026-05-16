@@ -1,26 +1,68 @@
+// SignalStack frontend controller.
+// This file connects the static demo UI to the FastAPI backend endpoints.
+
+function createTimingDiv(resultCount, duration) {
+    const timingDiv = document.createElement("div");
+
+    timingDiv.className = "article-meta";
+
+    timingDiv.textContent =
+        `Results: ${resultCount} | ` +
+        `Frontend Fetch Time: ${duration} ms`;
+
+    return timingDiv;
+}
+
+
+function formatNumber(value) {
+    if (value === null || value === undefined) {
+        return "unknown";
+    }
+
+    return Number(value).toFixed(3);
+}
+
+
+function createArticleTitle(article) {
+    if (!article.url) {
+        return `<h3>${article.title}</h3>`;
+    }
+
+    return `
+        <h3>
+            <a
+                href="${article.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="article-link"
+            >
+                ${article.title}
+            </a>
+        </h3>
+    `;
+}
+
+
+// System health check
+
 const healthButton = document.getElementById("health-button");
-
 const healthOutput = document.getElementById("health-output");
-
 
 healthButton.addEventListener("click", async () => {
     healthOutput.textContent = "Loading...";
 
     try {
         const response = await fetch("/api/v1/ml/health");
-
         const data = await response.json();
 
-        healthOutput.textContent = JSON.stringify(
-            data,
-            null,
-            2
-        );
+        healthOutput.textContent = JSON.stringify(data, null, 2);
     } catch (error) {
-        healthOutput.textContent =
-            "Error connecting to API.";
+        healthOutput.textContent = "Error connecting to API.";
     }
 });
+
+
+// Article keyword search
 
 const keywordSearchButton = document.getElementById(
     "keyword-search-button"
@@ -34,7 +76,6 @@ const keywordSearchResults = document.getElementById(
     "keyword-search-results"
 );
 
-
 keywordSearchButton.addEventListener("click", async () => {
     const query = keywordSearchInput.value.trim();
 
@@ -47,6 +88,8 @@ keywordSearchButton.addEventListener("click", async () => {
 
     keywordSearchResults.textContent = "Loading...";
 
+    const startTime = performance.now();
+
     try {
         const response = await fetch(
             `/api/v1/articles?search=${encodeURIComponent(query)}`
@@ -55,30 +98,35 @@ keywordSearchButton.addEventListener("click", async () => {
         const data = await response.json();
 
         if (!data.data || data.data.length === 0) {
-            keywordSearchResults.textContent =
-                "No articles found.";
-
+            keywordSearchResults.textContent = "No articles found.";
             return;
         }
 
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(1);
+
         keywordSearchResults.innerHTML = "";
+
+        keywordSearchResults.appendChild(
+            createTimingDiv(data.data.length, duration)
+        );
 
         data.data.forEach((article) => {
             const articleDiv = document.createElement("div");
 
             articleDiv.className = "article-card";
 
-        articleDiv.innerHTML = `
-            <h3>${article.title}</h3>
+            articleDiv.innerHTML = `
+                ${createArticleTitle(article)}
 
-            <div class="article-meta">
-                Source: ${article.source}
-            </div>
+                <div class="article-meta">
+                    Source: ${article.source || "unknown"}
+                </div>
 
-            <div class="article-summary">
-                ${article.summary || ""}
-            </div>
-        `;
+                <div class="article-summary">
+                    ${article.summary || ""}
+                </div>
+            `;
 
             keywordSearchResults.appendChild(articleDiv);
         });
@@ -87,6 +135,9 @@ keywordSearchButton.addEventListener("click", async () => {
             "Error performing search.";
     }
 });
+
+
+// Semantic search
 
 const semanticSearchButton = document.getElementById(
     "semantic-search-button"
@@ -100,7 +151,6 @@ const semanticSearchResults = document.getElementById(
     "semantic-search-results"
 );
 
-
 semanticSearchButton.addEventListener("click", async () => {
     const query = semanticSearchInput.value.trim();
 
@@ -112,6 +162,8 @@ semanticSearchButton.addEventListener("click", async () => {
     }
 
     semanticSearchResults.textContent = "Loading...";
+
+    const startTime = performance.now();
 
     try {
         const response = await fetch(
@@ -127,24 +179,31 @@ semanticSearchButton.addEventListener("click", async () => {
             return;
         }
 
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(1);
+
         semanticSearchResults.innerHTML = "";
+
+        semanticSearchResults.appendChild(
+            createTimingDiv(data.results.length, duration)
+        );
 
         data.results.forEach((article) => {
             const articleDiv = document.createElement("div");
 
             articleDiv.className = "article-card";
 
-                articleDiv.innerHTML = `
-                    <h3>${article.title}</h3>
-        
-                    <div class="article-meta">
-                        Similarity: ${article.similarity.toFixed(3)}
-                        |
-                        ML Category: ${article.ml_category || "unknown"}
-                        |
-                        ML Confidence: ${article.ml_confidence ?? "unknown"}
-                    </div>
-                `;
+            articleDiv.innerHTML = `
+                ${createArticleTitle(article)}
+
+                <div class="article-meta">
+                    Similarity: ${formatNumber(article.similarity)}
+                    |
+                    ML Category: ${article.ml_category || "unknown"}
+                    |
+                    ML Confidence: ${formatNumber(article.ml_confidence)}
+                </div>
+            `;
 
             semanticSearchResults.appendChild(articleDiv);
         });
@@ -153,6 +212,9 @@ semanticSearchButton.addEventListener("click", async () => {
             "Error performing semantic search.";
     }
 });
+
+
+// Hybrid search
 
 const hybridSearchButton = document.getElementById(
     "hybrid-search-button"
@@ -166,7 +228,6 @@ const hybridSearchResults = document.getElementById(
     "hybrid-search-results"
 );
 
-
 hybridSearchButton.addEventListener("click", async () => {
     const query = hybridSearchInput.value.trim();
 
@@ -178,6 +239,8 @@ hybridSearchButton.addEventListener("click", async () => {
     }
 
     hybridSearchResults.textContent = "Loading...";
+
+    const startTime = performance.now();
 
     try {
         const response = await fetch(
@@ -193,7 +256,14 @@ hybridSearchButton.addEventListener("click", async () => {
             return;
         }
 
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(1);
+
         hybridSearchResults.innerHTML = "";
+
+        hybridSearchResults.appendChild(
+            createTimingDiv(data.results.length, duration)
+        );
 
         data.results.forEach((article) => {
             const articleDiv = document.createElement("div");
@@ -201,30 +271,17 @@ hybridSearchButton.addEventListener("click", async () => {
             articleDiv.className = "article-card";
 
             articleDiv.innerHTML = `
-                <h3>${article.title}</h3>
+                ${createArticleTitle(article)}
 
                 <div class="article-meta">
-                    Hybrid Score:
-                    ${article.hybrid_score.toFixed(3)}
-
+                    Hybrid Score: ${formatNumber(article.hybrid_score)}
                     |
-            
                     Semantic Similarity:
-                    ${article.semantic_similarity.toFixed(3)}
-
+                    ${formatNumber(article.semantic_similarity)}
                     |
-
-                    ML Category:
-                    ${article.ml_category || "unknown"}
-
+                    ML Category: ${article.ml_category || "unknown"}
                     |
-
-                    ML Confidence:
-                    ${
-                        article.ml_confidence !== null
-                            ? article.ml_confidence.toFixed(3)
-                            : "unknown"
-                    }
+                    ML Confidence: ${formatNumber(article.ml_confidence)}
                 </div>
             `;
 
@@ -235,6 +292,9 @@ hybridSearchButton.addEventListener("click", async () => {
             "Error performing hybrid search.";
     }
 });
+
+
+// ML prediction
 
 const mlPredictButton = document.getElementById(
     "ml-predict-button"
@@ -248,7 +308,6 @@ const mlPredictOutput = document.getElementById(
     "ml-predict-output"
 );
 
-
 mlPredictButton.addEventListener("click", async () => {
     const text = mlPredictInput.value.trim();
 
@@ -260,6 +319,8 @@ mlPredictButton.addEventListener("click", async () => {
     }
 
     mlPredictOutput.textContent = "Loading...";
+
+    const startTime = performance.now();
 
     try {
         const response = await fetch(
@@ -277,16 +338,20 @@ mlPredictButton.addEventListener("click", async () => {
 
         const data = await response.json();
 
-        mlPredictOutput.textContent = JSON.stringify(
-            data,
-            null,
-            2
-        );
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(1);
+
+        mlPredictOutput.textContent =
+            `Frontend Fetch Time: ${duration} ms\n\n` +
+            JSON.stringify(data, null, 2);
     } catch (error) {
         mlPredictOutput.textContent =
             "Error performing ML prediction.";
     }
 });
+
+
+// Related articles
 
 const relatedArticlesButton = document.getElementById(
     "related-articles-button"
@@ -300,7 +365,6 @@ const relatedArticlesResults = document.getElementById(
     "related-articles-results"
 );
 
-
 relatedArticlesButton.addEventListener("click", async () => {
     const articleId = relatedArticleIdInput.value.trim();
 
@@ -312,6 +376,8 @@ relatedArticlesButton.addEventListener("click", async () => {
     }
 
     relatedArticlesResults.textContent = "Loading...";
+
+    const startTime = performance.now();
 
     try {
         const response = await fetch(
@@ -327,7 +393,14 @@ relatedArticlesButton.addEventListener("click", async () => {
             return;
         }
 
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(1);
+
         relatedArticlesResults.innerHTML = "";
+
+        relatedArticlesResults.appendChild(
+            createTimingDiv(data.results.length, duration)
+        );
 
         data.results.forEach((article) => {
             const articleDiv = document.createElement("div");
@@ -335,16 +408,12 @@ relatedArticlesButton.addEventListener("click", async () => {
             articleDiv.className = "article-card";
 
             articleDiv.innerHTML = `
-                <h3>${article.title}</h3>
+                ${createArticleTitle(article)}
 
                 <div class="article-meta">
-                    Similarity:
-                    ${article.similarity.toFixed(3)}
-
+                    Similarity: ${formatNumber(article.similarity)}
                     |
-
-                    ML Category:
-                    ${article.ml_category || "unknown"}
+                    ML Category: ${article.ml_category || "unknown"}
                 </div>
             `;
 
