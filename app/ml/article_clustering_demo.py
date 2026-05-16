@@ -59,6 +59,11 @@ for cluster_id, cluster_articles in clusters.items():
     )
 
     print(
+        f"Cluster Size: "
+        f"{len(cluster_articles)}"
+    )
+
+    print(
         "================================"
     )
 
