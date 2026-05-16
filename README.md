@@ -19,6 +19,59 @@ The project combines:
 
 # Features
 
+## Retrieval Architectures
+
+SignalStack supports multiple retrieval strategies:
+
+### 1. PostgreSQL Full-Text Search
+
+Keyword and phrase retrieval using:
+- TSVECTOR
+- ts_rank_cd
+- weighted search ranking
+- GIN indexes
+
+Example:
+
+```text
+/api/v1/articles?search=ai
+```
+
+---
+
+### 2. Semantic Retrieval
+
+Embedding-based semantic similarity search using:
+- sentence-transformers
+- cosine similarity
+- persisted embedding vectors
+
+Example:
+
+```text
+/api/v1/articles/semantic-search?query=virus outbreak cruise ship
+```
+
+---
+
+### 3. Hybrid Retrieval
+
+Hybrid ranking combines:
+- semantic similarity
+- ML confidence scoring
+
+This demonstrates retrieval fusion workflows commonly used in:
+- recommendation systems
+- search engines
+- RAG pipelines
+- AI retrieval systems
+
+Example:
+
+```text
+/api/v1/articles/hybrid-search?query=virus outbreak cruise ship
+```
+
 ## News Ingestion Pipeline
 
 - RSS feed ingestion
