@@ -7,6 +7,7 @@ def find_similar_articles(
     db,
     article_id: int,
     limit: int = 5,
+    min_similarity: float = 0.0,
 ) -> list[tuple[Article, float]]:
     """
     Find semantically similar articles.
@@ -39,6 +40,9 @@ def find_similar_articles(
             [base_article.embedding],
             [article.embedding],
         )[0][0]
+
+        if similarity < min_similarity:
+            continue
 
         similarity_results.append(
             (
