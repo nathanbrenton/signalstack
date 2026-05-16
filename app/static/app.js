@@ -455,3 +455,20 @@ addEnterKeyListener(
     relatedArticleIdInput,
     () => relatedArticlesButton.click()
 );
+
+// RSS feed panel
+
+const rssFeedsButton = document.getElementById("rss-feeds-button");
+const rssPanel = document.getElementById("rss-panel");
+
+const rssPanelCloseButton = document.getElementById(
+    "rss-panel-close-button"
+);
+
+rssFeedsButton.addEventListener("click", () => {
+    rssPanel.classList.remove("hidden");
+});
+
+rssPanelCloseButton.addEventListener("click", () => {
+    rssPanel.classList.add("hidden");
+});

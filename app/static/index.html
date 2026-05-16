@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/demo/favicon.svg" >
     <title>SignalStack Demo</title>
     <link rel="stylesheet" href="/demo/styles.css">
 </head>
-
 <body>
     <main>
-        <header>
-            <h1>SignalStack</h1>
+        <header class="top-header">
+            <div>
+                <h1>SignalStack</h1>
 
             <p>
                 AI-Powered News Intelligence API
             </p>
+
+            </div>
+
+
+            <div class="header-buttons">
+                <button id="rss-feeds-button">
+                    RSS Feeds
+                </button>
+            </div>
         </header>
 
         <section>
@@ -180,6 +190,44 @@
             <div id="related-articles-results"></div>
         </section>
     </main>
+
+    <div id="rss-panel" class="rss-panel hidden">
+        <div class="rss-panel-content">
+            <div class="rss-panel-header">
+                <h2>RSS Feeds</h2>
+
+                <button id="rss-panel-close-button">
+                    Close
+                </button>
+            </div>
+
+            <p class="rss-warning">
+                User-added RSS URLs are not verified by SignalStack.
+                It is the end-user's responsibility to determine URL
+                accuracy, compatibility, and trustworthiness.
+            </p>
+
+            <h3>Known Feeds</h3>
+    
+            <ul id="rss-feed-list"></ul>
+
+            <h3>Add RSS Feed URL</h3>
+
+            <div class="search-controls">
+                <input
+                    type="url"
+                    id="rss-feed-input"
+                    placeholder="https://example.com/rss.xml"
+                >
+
+                <button id="rss-feed-add-button">
+                    Add Feed
+                </button>
+            </div>
+    
+            <p id="rss-feed-message"></p>
+        </div>
+    </div>
 
     <script src="/demo/app.js"></script>
 </body>
