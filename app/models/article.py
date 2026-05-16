@@ -1,5 +1,5 @@
 # app/models/article.py
-from sqlalchemy import Column, DateTime, Float, Integer, String
+from sqlalchemy import Column, DateTime, Float, Integer, JSON, String
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from datetime import datetime
 
@@ -31,3 +31,4 @@ class Article(Base):
     ml_category = Column(String(100), nullable=True)
     ml_confidence = Column(Float, nullable=True)
     ml_last_classified_at = Column(DateTime, nullable=True)
+    embedding = Column(JSON, nullable=True)
