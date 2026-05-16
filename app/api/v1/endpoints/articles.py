@@ -11,6 +11,7 @@ from app.crud.article import (
 )
 from app.ml.article_similarity import find_similar_articles
 from app.ml.semantic_search import semantic_search
+from app.ml.hybrid_search import hybrid_search
 from app.schemas.article import (
     ArticleCreate,
     ArticleRead,
@@ -30,6 +31,54 @@ def create(article: ArticleCreate, db: Session = Depends(get_db)):
 @router.get("/articles/count")
 def article_count(db: Session = Depends(get_db)):
     return {"count": count_articles(db)}
+
+
+@router.get("/articles/hybrid-search")
+def hybrid_article_search(
+    query: str,
+    db: Session = Depends(get_db),
+    limit: int = Query(5, ge=1, le=20),
+    min_similarity: float = Query(
+        0.0,
+        ge=-1.0,
+        le=1.0,
+    ),
+):
+    results = hybrid_search(
+        db,
+        query,
+        limit=limit,
+        min_similarity=min_similarity,
+    )
+
+    return {
+        "query": query,
+        "limit": limit,
+        "min_similarity": min_similarity,
+        "result_count": len(results),
+        "results": [
+            {
+                "id": article.id,
+                "title": article.title,
+                "url": article.url,
+                "semantic_similarity":
+                    scores[
+                        "semantic_similarity"
+                    ],
+                "ml_confidence":
+                    scores[
+                        "ml_confidence"
+                    ],
+                "hybrid_score":
+                    scores[
+                        "hybrid_score"
+                    ],
+                "ml_category":
+                    article.ml_category,
+            }
+            for article, scores in results
+        ],
+    }
 
 
 @router.get("/articles/semantic-search")
