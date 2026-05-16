@@ -3,6 +3,7 @@ from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
 from app.ml.classifier import classify_article_text
+from app.ml.embeddings import generate_embedding
 from app.utils.text_cleaning import (
     clean_html_summary,
     detect_language,
@@ -115,6 +116,8 @@ def ingest_feed(db, rss_url):
             ingested_at=ingested_at,
             quality_score=quality_score,
             ml_category=ml_category,
+            embedding=generate_embedding(summary)
+            if summary else None,
         )
 
         db.add(article)
