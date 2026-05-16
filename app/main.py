@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
 from app.core.config import settings
 from app.api.v1.router import api_router
 
@@ -8,6 +10,8 @@ app = FastAPI(
 )
 
 app.include_router(api_router, prefix="/api/v1")
+
+app.mount("/demo", StaticFiles(directory="app/static", html=True), name="static")
 
 
 @app.get("/")

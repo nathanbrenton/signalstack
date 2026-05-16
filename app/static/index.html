@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignalStack Demo</title>
+    <link rel="stylesheet" href="/demo/styles.css">
+</head>
+<body>
+
+<main>
+    <header>
+        <h1>SignalStack</h1>
+        <p>AI-Powered News Intelligence API</p>
+    </header>
+
+    <section>
+        <h2>System Status</h2>
+        <button id="health-button">Check API Health</button>
+
+        <pre id="health-output"></pre>
+    </section>
+
+    <section>
+        <h2>Article Keyword Search</h2>
+
+        <input
+            type="text"
+            id="keyword-search-input"
+            placeholder="Search articles by keyword"
+        >
+
+        <button id="keyword-search-button">
+            Search
+        </button>
+
+        <div id="keyword-search-results"></div>
+    </section>
+
+    <section>
+        <h2>Semantic Search</h2>
+
+        <input
+            type="text"
+            id="semantic-search-input"
+            placeholder="Search by meaning/context"
+        >
+
+        <button id="semantic-search-button">
+            Semantic Search
+        </button>
+
+        <div id="semantic-search-results"></div>
+    </section>
+
+    <section>
+        <h2>Hybrid Search</h2>
+
+        <input
+            type="text"
+            id="hybrid-search-input"
+            placeholder="Hybrid keyword + semantic search"
+        >
+
+        <button id="hybrid-search-button">
+            Hybrid Search
+        </button>
+
+        <div id="hybrid-search-results"></div>
+    </section>
+
+    <section>
+        <h2>ML Prediction</h2>
+
+        <textarea
+            id="ml-predict-input"
+            rows="6"
+            placeholder="Enter article text for ML classification"
+        ></textarea>
+
+        <button id="ml-predict-button">
+            Predict Category
+        </button>
+
+        <pre id="ml-predict-output"></pre>
+    </section>
+
+    <section>
+        <h2>Related Articles</h2>
+
+        <input
+            type="number"
+            id="related-article-id-input"
+            placeholder="Article ID"
+        >
+
+        <button id="related-articles-button">
+            Find Related Articles
+        </button>
+
+        <div id="related-articles-results"></div>
+    </section>
+</main>
+
+    <script src="/demo/app.js"></script>
+</body>
+</html>
