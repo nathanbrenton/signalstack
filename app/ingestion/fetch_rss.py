@@ -108,8 +108,8 @@ def ingest_feed(db, rss_url):
             ingested_at=ingested_at,
             quality_score=quality_score,
             ml_category=ml_category,
-            embedding=generate_embedding(summary)
-            if summary else None,
+            embedding=generate_embedding(clean_summary)
+            if clean_summary else None,
         )
 
         db.add(article)

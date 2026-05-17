@@ -530,7 +530,7 @@ async function syncRssFeeds() {
 
     try {
         const response = await fetch(
-            "/api/v1/rss-feeds/sync",
+            "/api/v1/rss-feeds/ingest",
             {
                 method: "POST",
             }
@@ -538,11 +538,30 @@ async function syncRssFeeds() {
 
         const data = await response.json();
 
-        rssFeedMessage.textContent =
-            `Configured: ${data.configured_count} | ` +
-            `Created: ${data.created_count} | ` +
-            `Activated: ${data.activated_count} | ` +
-            `Deactivated: ${data.deactivated_count}`;
+        rssFeedMessage.innerHTML =
+            `
+            <div>
+                Processed: ${data.processed_count}
+                |
+                Successful: ${data.success_count}
+                |
+                Errors: ${data.error_count}
+            </div>
+            `;
+        if (data.errors && data.errors.length > 0) {
+            const errorList = document.createElement("ul");
+
+            data.errors.forEach((item) => {
+                const listItem = document.createElement("li");
+
+                listItem.textContent =
+                    `${item.url} | ${item.error}`;
+
+                errorList.appendChild(listItem);
+            });
+
+            rssFeedMessage.appendChild(errorList);
+        }
 
         loadRssFeeds();
     } catch (error) {
