@@ -1,18 +1,35 @@
 INGEST_LIMIT = 5
 
 RSS_FEEDS = [
-    "https://nathanbrenton.com/rss.xml",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
     "https://www.aljazeera.com/xml/rss/all.xml",
     "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
     "https://feeds.foxnews.com/foxnews/latest",
     "https://feeds.nbcnews.com/nbcnews/public/news",
+    "https://www.npr.org/rss/rss.php?id=1004",
+    "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
     "https://www.whitehouse.gov/news/feed",
     "https://www.fbi.gov/feeds/national-press-releases/rss.xml",
-    "https://healthrangerreport.com/rss",
-    "https://gematriaeffect.news/feed/",
-    "https://gematriaeffect.news/comments/feed/",
 ]
 
+#RSS_FEEDS = [
+#    "https://nathanbrenton.com/rss.xml",
+#    "https://feeds.bbci.co.uk/news/world/rss.xml",
+#    "https://www.aljazeera.com/xml/rss/all.xml",
+#    "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+#    "https://feeds.foxnews.com/foxnews/latest",
+#    "https://feeds.nbcnews.com/nbcnews/public/news",
+#    "https://www.whitehouse.gov/news/feed",
+#    "https://www.fbi.gov/feeds/national-press-releases/rss.xml",
+#    "https://feeds.reuters.com/reuters/worldNews",
+#    "https://apnews.com/rss",
+#    "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+#    "https://rss.cnn.com/rss/cnn_world.rss",
+#    "https://www.npr.org/rss/rss.php?id=1004",
+#   "https://www.fbi.gov/feeds/email-alerts/los-angeles-news/rss.xml",
+#   "https://healthrangerreport.com/rss",
+#   "https://gematriaeffect.news/feed/",
+#   "https://gematriaeffect.news/comments/feed/",
+#]
 
-#    "https://www.fbi.gov/feeds/email-alerts/los-angeles-news/rss.xml",
+
