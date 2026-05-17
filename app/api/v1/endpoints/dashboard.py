@@ -8,6 +8,8 @@ from app.db.deps import get_db
 from app.models.article import Article
 from app.models.rss_feed_source import RSSFeedSource
 
+from sqlalchemy import desc
+
 router = APIRouter()
 
 
@@ -38,9 +40,35 @@ def get_dashboard_stats(
         .scalar()
     )
 
+    latest_article = (
+        db.query(Article)
+        .order_by(desc(Article.ingested_at))
+        .first()
+    )
+
+    latest_feed_ingest = (
+        db.query(RSSFeedSource)
+        .filter(
+            RSSFeedSource.last_ingested_at.isnot(None)
+        )
+        .order_by(desc(RSSFeedSource.last_ingested_at))
+        .first()
+    )
+
     return {
         "total_articles": total_articles,
         "active_rss_feeds": active_rss_feeds,
         "ml_classified_articles": ml_classified_articles,
         "embedded_articles": embedded_articles,
+        "last_article_ingested_at": (
+            latest_article.ingested_at
+            if latest_article
+            else None
+        ),
+
+        "last_feed_ingest_at": (
+            latest_feed_ingest.last_ingested_at
+            if latest_feed_ingest
+            else None
+        ),
     }

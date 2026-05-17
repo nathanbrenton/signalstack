@@ -4,6 +4,16 @@
 
 // Helper functions
 
+function formatTimestamp(timestamp) {
+    if (!timestamp) {
+        return "Never";
+    }
+
+    const date = new Date(timestamp);
+
+    return date.toLocaleString();
+}
+
 function createTimingDiv(resultCount, duration) {
     const timingDiv = document.createElement("div");
 
@@ -511,7 +521,9 @@ function renderRssFeedList(feeds) {
 
     feeds.forEach((feed) => {
         const feedUrl = feed.url || "N/A";
-        const lastIngested = feed.last_ingested_at || "Never";
+        const lastIngested = formatTimestamp(
+            feed.last_ingested_at
+        );
         const lastError = feed.last_error || "None";
 
         const listItem = document.createElement("li");
@@ -647,6 +659,21 @@ async function loadDashboardStats() {
         dashboardStats.appendChild(
             createStatCard("Embedded Articles", data.embedded_articles)
         );
+
+        dashboardStats.appendChild(
+            createStatCard(
+                "Last Article Ingest",
+                formatTimestamp(data.last_article_ingested_at)
+            )
+        );
+
+        dashboardStats.appendChild(
+            createStatCard(
+                "Last Feed Ingest",
+                formatTimestamp(data.last_feed_ingest_at)
+            )
+        );
+
     } catch (error) {
         dashboardStats.innerHTML =
             `<div class="stat-card">Unable to load dashboard stats.</div>`;
