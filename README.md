@@ -96,6 +96,8 @@ SignalStack ingests RSS news feeds, enriches articles using AI/ML pipelines, sto
 
 # Architecture Overview
 
+![SignalStack Architecture](docs/diagrams/signalstack_UML.png)
+
 SignalStack follows a modular service-layer architecture:
 
 RSS Feeds  
