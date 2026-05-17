@@ -2,7 +2,7 @@ from datetime import datetime
 from app.config.rss_feeds import RSS_FEEDS, INGEST_LIMIT
 from app.db.session import SessionLocal
 from app.models.article import Article
-from app.ml.classifier import classify_article_text
+from app.ml.inference import predict_article_category
 from app.ml.embeddings import generate_embedding
 from app.utils.text_cleaning import (
     clean_html_summary,
@@ -47,7 +47,9 @@ def ingest_feed(db, rss_url):
         top_keyword = keywords[0] if keywords else None
 
         classification_text = f"{title} {clean_summary}"
-        ml_category = classify_article_text(classification_text)
+        ml_category, ml_confidence = predict_article_category(
+            classification_text
+        )
 
 
         if not title or not url:
@@ -108,6 +110,7 @@ def ingest_feed(db, rss_url):
             ingested_at=ingested_at,
             quality_score=quality_score,
             ml_category=ml_category,
+            ml_confidence=ml_confidence,
             embedding=generate_embedding(clean_summary)
             if clean_summary else None,
         )
