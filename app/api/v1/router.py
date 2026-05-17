@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.api.v1.endpoints import (
     articles,
+    dashboard,
     health,
     ml,
     ml_health,
@@ -15,3 +16,7 @@ api_router.include_router(articles.router, tags=["articles"])
 api_router.include_router(ml.router, tags=["ml"])
 api_router.include_router(ml_health.router, tags=["ml"])
 api_router.include_router(rss_feeds.router, tags=["rss-feeds"])
+api_router.include_router(
+    dashboard.router,
+    tags=["dashboard"],
+)

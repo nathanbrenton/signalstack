@@ -53,6 +53,26 @@ function addEnterKeyListener(inputElement, callback) {
     });
 }
 
+function createStatCard(label, value) {
+    const statCard = document.createElement("div");
+
+    statCard.className = "stat-card";
+
+    statCard.innerHTML = `
+        <div class="stat-value">
+            ${value}
+        </div>
+
+        <div class="stat-label">
+            ${label}
+        </div>
+    `;
+
+    return statCard;
+}
+
+
+
 
 // System health check
 
@@ -595,3 +615,40 @@ rssSyncButton.addEventListener("click", () => {
 rssPanelCloseButton.addEventListener("click", () => {
     rssPanel.classList.add("hidden");
 });
+
+const dashboardStats = document.getElementById("dashboard-stats");
+
+
+async function loadDashboardStats() {
+    try {
+        const response = await fetch("/api/v1/dashboard/stats");
+        const data = await response.json();
+
+        dashboardStats.innerHTML = "";
+
+        dashboardStats.appendChild(
+            createStatCard("Total Articles", data.total_articles)
+        );
+
+        dashboardStats.appendChild(
+            createStatCard("Active RSS Feeds", data.active_rss_feeds)
+        );
+
+        dashboardStats.appendChild(
+            createStatCard(
+                "ML-Classified Articles",
+                data.ml_classified_articles
+            )
+        );
+
+        dashboardStats.appendChild(
+            createStatCard("Embedded Articles", data.embedded_articles)
+        );
+    } catch (error) {
+        dashboardStats.innerHTML =
+            `<div class="stat-card">Unable to load dashboard stats.</div>`;
+    }
+}
+
+
+loadDashboardStats();

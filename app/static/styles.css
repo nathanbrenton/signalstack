@@ -248,3 +248,31 @@ pre,
 .rss-actions {
     margin: 20px 0;
 }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(180px, 1fr)
+    );
+
+    gap: 16px;
+}
+
+.stat-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f8fafc;
+}
+
+.stat-label {
+    margin-top: 6px;
+    color: #94a3b8;
+}
