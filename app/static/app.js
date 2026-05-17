@@ -489,22 +489,35 @@ const rssSyncButton = document.getElementById(
 function renderRssFeedList(feeds) {
     rssFeedList.innerHTML = "";
 
-    feeds.forEach((feedUrl) => {
+    feeds.forEach((feed) => {
+        const feedUrl = feed.url || "N/A";
+        const lastIngested = feed.last_ingested_at || "Never";
+        const lastError = feed.last_error || "None";
+
         const listItem = document.createElement("li");
 
         listItem.innerHTML = `
-            <a
-                href="${feedUrl}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="article-link"
-            >
-                ${feedUrl}
-            </a>
+            <div class="rss-feed-item">
+                <a
+                    href="${feedUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="article-link"
+                >
+                    ${feedUrl}
+                </a>
+
+                <div class="article-meta">
+                    Active: ${feed.is_active}
+                    |
+                    Last Ingested: ${lastIngested}
+                    |
+                    Last Error: ${lastError}
+                </div>
+            </div>
         `;
 
         rssFeedList.appendChild(listItem);
-
     });
 }
 
