@@ -143,9 +143,17 @@ The frontend intentionally uses plain HTML, CSS, and JavaScript to keep the proj
 
 ![SignalStack Dashboard](docs/screenshots/screenshot_01_stickyheader_dashboard.png)
 
-## Platform Status & Architecture
+## Platform Architecture & Status
 
 ![SignalStack About and Status](docs/screenshots/screenshot_02_about_status.png)
+
+## Semantic Search
+
+![Semantic Search](docs/screenshots/screenshot_03_semantic_search.png)
+
+## Hybrid Retrieval
+
+![Hybrid Retrieval](docs/screenshots/screenshot_04_hybrid_search.png)
 
 ---
 
