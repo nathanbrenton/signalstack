@@ -1,0 +1,62 @@
+@startuml
+title SignalStack High-Level Architecture
+
+left to right direction
+
+skinparam backgroundColor #0F172A
+skinparam shadowing false
+skinparam ArrowColor #94A3B8
+skinparam ArrowThickness 1.5
+
+skinparam rectangle {
+    BackgroundColor #1E293B
+    BorderColor #475569
+    FontColor #E5E7EB
+}
+
+skinparam TitleFontColor #E5E7EB
+skinparam ActorFontColor #E5E7EB
+
+skinparam ActorBorderColor #60A5FA
+skinparam ActorBackgroundColor #1E293B
+
+actor "User / Recruiter" as User
+
+rectangle "Frontend Dashboard\n/demo" as Frontend
+rectangle "FastAPI Router\n/api/v1" as Router
+
+rectangle "Articles API" as ArticlesAPI
+rectangle "ML API" as MlAPI
+rectangle "RSS API" as RssAPI
+rectangle "Dashboard API" as DashboardAPI
+
+rectangle "Search and Retrieval\nKeyword + Semantic + Hybrid" as SearchService
+rectangle "ML Inference\nClassification + Confidence" as MlService
+rectangle "RSS Sync and Ingestion" as RssService
+rectangle "Embedding Service\nLocal Sentence Transformer" as EmbeddingService
+
+rectangle "PostgreSQL\nArticles + RSS Feed Sources" as Database
+rectangle "Persisted ML Artifacts\nClassifier + Vectorizer" as MlArtifacts
+rectangle "Local Embedding Model" as EmbeddingModel
+
+User --> Frontend
+Frontend --> Router
+
+Router --> ArticlesAPI
+Router --> MlAPI
+Router --> RssAPI
+Router --> DashboardAPI
+
+ArticlesAPI --> SearchService
+MlAPI --> MlService
+RssAPI --> RssService
+DashboardAPI --> Database
+
+SearchService --> Database
+SearchService --> EmbeddingService
+RssService --> Database
+MlService --> MlArtifacts
+EmbeddingService --> EmbeddingModel
+EmbeddingService --> Database
+
+@enduml
