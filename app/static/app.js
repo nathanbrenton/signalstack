@@ -456,6 +456,7 @@ addEnterKeyListener(
     () => relatedArticlesButton.click()
 );
 
+
 // RSS feed panel
 
 const rssFeedsButton = document.getElementById("rss-feeds-button");
@@ -465,8 +466,98 @@ const rssPanelCloseButton = document.getElementById(
     "rss-panel-close-button"
 );
 
+const rssFeedList = document.getElementById(
+    "rss-feed-list"
+);
+
+const rssFeedInput = document.getElementById(
+    "rss-feed-input"
+);
+
+const rssFeedAddButton = document.getElementById(
+    "rss-feed-add-button"
+);
+
+const rssFeedMessage = document.getElementById(
+    "rss-feed-message"
+);
+
+const rssSyncButton = document.getElementById(
+    "rss-sync-button"
+);
+
+function renderRssFeedList(feeds) {
+    rssFeedList.innerHTML = "";
+
+    feeds.forEach((feedUrl) => {
+        const listItem = document.createElement("li");
+
+        listItem.innerHTML = `
+            <a
+                href="${feedUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="article-link"
+            >
+                ${feedUrl}
+            </a>
+        `;
+
+        rssFeedList.appendChild(listItem);
+
+    });
+}
+
+async function loadRssFeeds() {
+    rssFeedList.innerHTML = "";
+
+    try {
+        const response = await fetch("/api/v1/rss-feeds");
+        const data = await response.json();
+
+        renderRssFeedList(data.feeds || []);
+    } catch (error) {
+        renderRssFeedList(["N/A"]);
+
+        rssFeedMessage.textContent =
+            "Unable to load RSS feeds. Displaying N/A.";
+    }
+}
+
+async function syncRssFeeds() {
+    rssFeedMessage.textContent =
+        "Synchronizing RSS feed sources...";
+
+    try {
+        const response = await fetch(
+            "/api/v1/rss-feeds/sync",
+            {
+                method: "POST",
+            }
+        );
+
+        const data = await response.json();
+
+        rssFeedMessage.textContent =
+            `Configured: ${data.configured_count} | ` +
+            `Created: ${data.created_count} | ` +
+            `Activated: ${data.activated_count} | ` +
+            `Deactivated: ${data.deactivated_count}`;
+
+        loadRssFeeds();
+    } catch (error) {
+        rssFeedMessage.textContent =
+            "RSS synchronization failed.";
+    }
+}
+
 rssFeedsButton.addEventListener("click", () => {
     rssPanel.classList.remove("hidden");
+    loadRssFeeds();
+});
+
+rssSyncButton.addEventListener("click", () => {
+    syncRssFeeds();
 });
 
 rssPanelCloseButton.addEventListener("click", () => {
