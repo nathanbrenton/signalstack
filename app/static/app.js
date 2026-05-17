@@ -597,9 +597,12 @@ async function syncRssFeeds() {
         }
 
         loadRssFeeds();
+        loadDashboardStats();
     } catch (error) {
+        console.error(error);
+
         rssFeedMessage.textContent =
-            "RSS synchronization failed.";
+            `RSS synchronization failed: ${error.message}`;
     }
 }
 
