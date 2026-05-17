@@ -1,0 +1,50 @@
+@startuml
+title SignalStack RSS Ingestion Flow
+
+left to right direction
+
+skinparam backgroundColor #0F172A
+skinparam shadowing false
+skinparam ArrowColor #94A3B8
+skinparam ArrowThickness 1.5
+skinparam TitleFontColor #E5E7EB
+skinparam ActorFontColor #E5E7EB
+skinparam ActorBorderColor #60A5FA
+skinparam ActorBackgroundColor #1E293B
+
+skinparam rectangle {
+    BackgroundColor #1E293B
+    BorderColor #475569
+    FontColor #E5E7EB
+}
+
+actor "User / Recruiter" as User
+
+rectangle "Frontend RSS Modal" as Frontend
+rectangle "POST /api/v1/rss-feeds/ingest" as Endpoint
+rectangle "RSS Feed Sync Service" as SyncService
+rectangle "RSS Feed Sources Table" as FeedSources
+rectangle "RSS Ingestion Service" as IngestionService
+rectangle "RSS Fetcher" as Fetcher
+rectangle "Text Cleaning\nKeywords\nQuality Scoring" as Cleaning
+rectangle "ML Classification\nCategory + Confidence" as ML
+rectangle "Embedding Generation" as Embeddings
+rectangle "Articles Table" as Articles
+rectangle "Dashboard Stats Refresh" as Dashboard
+
+User --> Frontend
+Frontend --> Endpoint
+Endpoint --> SyncService
+SyncService --> FeedSources
+Endpoint --> IngestionService
+IngestionService --> FeedSources
+IngestionService --> Fetcher
+Fetcher --> Cleaning
+Cleaning --> ML
+Cleaning --> Embeddings
+ML --> Articles
+Embeddings --> Articles
+Articles --> Dashboard
+Dashboard --> Frontend
+
+@enduml

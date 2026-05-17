@@ -1,0 +1,54 @@
+@startuml
+title SignalStack AI Retrieval Flow
+
+left to right direction
+
+skinparam backgroundColor #0F172A
+skinparam shadowing false
+skinparam ArrowColor #94A3B8
+skinparam ArrowThickness 1.5
+skinparam TitleFontColor #E5E7EB
+skinparam ActorFontColor #E5E7EB
+skinparam ActorBorderColor #60A5FA
+skinparam ActorBackgroundColor #1E293B
+
+skinparam rectangle {
+    BackgroundColor #1E293B
+    BorderColor #475569
+    FontColor #E5E7EB
+}
+
+actor "User / Recruiter" as User
+
+rectangle "Frontend Search UI" as Frontend
+rectangle "Keyword Search" as Keyword
+rectangle "Semantic Search" as Semantic
+rectangle "Hybrid Search" as Hybrid
+rectangle "PostgreSQL\nFull-Text Search" as FullText
+rectangle "Embedding Service" as EmbeddingService
+rectangle "Local Sentence Transformer" as Model
+rectangle "Article Embeddings\nPostgreSQL JSON" as Embeddings
+rectangle "Hybrid Ranking\nKeyword + Semantic" as Ranking
+rectangle "Ranked Article Results" as Results
+
+User --> Frontend
+
+Frontend --> Keyword
+Frontend --> Semantic
+Frontend --> Hybrid
+
+Keyword --> FullText
+Semantic --> EmbeddingService
+Hybrid --> FullText
+Hybrid --> EmbeddingService
+
+EmbeddingService --> Model
+EmbeddingService --> Embeddings
+
+FullText --> Ranking
+Embeddings --> Ranking
+
+Ranking --> Results
+Results --> Frontend
+
+@enduml

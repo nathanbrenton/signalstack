@@ -96,9 +96,11 @@ SignalStack ingests RSS news feeds, enriches articles using AI/ML pipelines, sto
 
 # Architecture Overview
 
+## High-Level Platform Architecture
+
 ![SignalStack Architecture](docs/diagrams/signalstack_overview.png)
 
-SignalStack follows a modular service-layer architecture:
+SignalStack follows a modular service-layer architecture designed for AI-enhanced retrieval, operational ingestion workflows, and offline-capable ML pipelines.
 
 RSS Feeds  
 → Ingestion Pipeline  
@@ -108,6 +110,18 @@ RSS Feeds
 → PostgreSQL Storage  
 → Search / Retrieval APIs  
 → Frontend Dashboard
+
+## RSS Ingestion Flow
+
+![RSS Ingestion Flow](docs/diagrams/rss_ingestion_flow.png)
+
+The RSS ingestion pipeline synchronizes configured feed sources, performs ingestion, enriches article content with ML classification and embeddings, and updates operational dashboard statistics.
+
+## AI Retrieval Flow
+
+![AI Retrieval Flow](docs/diagrams/ai_retrieval_flow.png)
+
+SignalStack supports keyword search, semantic retrieval, and hybrid ranking by combining PostgreSQL full-text search with local embedding similarity workflows.
 
 Core architectural goals:
 
@@ -327,7 +341,9 @@ Additional project documentation:
 
 - `DEMO.md`
 - `AI_ARCHITECTURE.md`
-- `docs/diagrams/ai_architecture.puml`
+- `docs/diagrams/signalstack_overview.puml`
+- `docs/diagrams/rss_ingestion_flow.puml`
+- `docs/diagrams/ai_retrieval_flow.puml`
 
 ---
 
