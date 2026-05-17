@@ -149,11 +149,11 @@ The frontend intentionally uses plain HTML, CSS, and JavaScript to keep the proj
 
 ## Semantic Search
 
-![Semantic Search](docs/screenshots/screenshot_03_semantic_search.png)
+![Semantic Search](docs/screenshots/screenshot_03_search-semantic.png)
 
 ## Hybrid Retrieval
 
-![Hybrid Retrieval](docs/screenshots/screenshot_04_hybrid_search.png)
+![Hybrid Retrieval](docs/screenshots/screenshot_04_search-hybrid.png)
 
 ---
 
