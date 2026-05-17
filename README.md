@@ -1,168 +1,68 @@
 # SignalStack
 
-SignalStack is an AI-enhanced news intelligence platform built to demonstrate production-style backend engineering, PostgreSQL search architecture, and practical machine learning workflows.
+AI-powered news intelligence platform built with FastAPI, PostgreSQL, machine learning, semantic embeddings, and hybrid retrieval.
 
-The project combines:
-
-- FastAPI backend engineering
-- PostgreSQL full-text search
-- RSS ingestion pipelines
-- NLP preprocessing
-- TF-IDF feature extraction
-- supervised machine learning
-- persisted ML inference artifacts
-- live AI inference APIs
-- confidence-aware filtering
-- hybrid search + AI retrieval
+SignalStack ingests RSS news feeds, enriches articles using AI/ML pipelines, stores semantic embeddings locally, and exposes operational APIs and a lightweight frontend dashboard for search, ingestion, and analytics workflows.
 
 ---
 
 # Features
 
-## Retrieval Architectures
+## News Ingestion
 
-SignalStack supports multiple retrieval strategies:
+- RSS feed ingestion pipeline
+- Configurable feed source management
+- Duplicate detection
+- Operational ingestion dashboard
+- Feed synchronization between config and database
+- Feed health/error visibility
+- Live ingestion triggering from frontend
 
-### 1. PostgreSQL Full-Text Search
+## Search & Retrieval
 
-Keyword and phrase retrieval using:
-- TSVECTOR
-- ts_rank_cd
-- weighted search ranking
-- GIN indexes
+- PostgreSQL TSVECTOR full-text search
+- Weighted ranking with `ts_rank_cd`
+- Phrase search
+- Keyword filtering
+- Semantic embedding search
+- Related article retrieval
+- Hybrid keyword + semantic ranking
+- Pagination and sorting
 
-Example:
+## AI & Machine Learning
 
-```text
-/api/v1/articles?search=ai
-```
-
----
-
-### 2. Semantic Retrieval
-
-Embedding-based semantic similarity search using:
-- sentence-transformers
-- cosine similarity
-- persisted embedding vectors
-
-Example:
-
-```text
-/api/v1/articles/semantic-search?query=virus outbreak cruise ship
-```
-
----
-
-### 3. Hybrid Retrieval
-
-Hybrid ranking combines:
-- semantic similarity
+- Local/offline sentence-transformer embeddings
+- scikit-learn article classification
 - ML confidence scoring
+- Persisted vectorizers and model artifacts
+- Live inference API
+- Article similarity retrieval
+- Unsupervised clustering demo
+- Embedding persistence in PostgreSQL
 
-This demonstrates retrieval fusion workflows commonly used in:
-- recommendation systems
-- search engines
-- RAG pipelines
-- AI retrieval systems
+## Frontend Dashboard
 
-Example:
+- Static frontend served by FastAPI
+- Dashboard statistics cards
+- Sticky operational navigation
+- RSS feed operational modal
+- Live ingestion controls
+- Semantic search interface
+- Hybrid search interface
+- ML prediction testing
+- Related article lookup
+- Live dashboard refresh after ingestion
 
-```text
-/api/v1/articles/hybrid-search?query=virus outbreak cruise ship
-```
+## Operational Features
 
-## News Ingestion Pipeline
-
-- RSS feed ingestion
-- duplicate prevention
-- article normalization
-- clean summary generation
-- keyword extraction
-- language detection
-- quality scoring
-
----
-
-## PostgreSQL Search Architecture
-
-- TSVECTOR search columns
-- weighted full-text ranking
-- GIN indexes
-- phrase search
-- ts_rank_cd ranking
-- relevance-aware pagination
-- hybrid search workflows
-
-Example:
-
-```text
-/api/v1/articles?search=ai
-```
-
-Phrase search:
-
-```text
-/api/v1/articles?phrase_search=artificial intelligence
-```
-
----
-
-## AI / Machine Learning Features
-
-### Weak Supervision Classifier
-
-Rule-based NLP classification used to bootstrap training labels.
-
-### TF-IDF Feature Extraction
-
-Text vectorization using scikit-learn TF-IDF pipelines.
-
-### Supervised ML Pipeline
-
-- Multinomial Naive Bayes classifier
-- persisted model artifacts
-- reusable inference service layer
-- probability distribution scoring
-
-### Live Inference API
-
-```text
-POST /api/v1/ml/predict
-```
-
-Returns:
-- predicted category
-- confidence score
-- probability distribution
-- inference timing
-- model version metadata
-
-### AI Enrichment Persistence
-
-Articles persist:
-- ml_category
-- ml_confidence
-- ml_last_classified_at
-
----
-
-# Example Hybrid Retrieval
-
-Search + AI confidence filtering:
-
-```text
-/api/v1/articles?search=ai&min_ml_confidence=0.70
-```
-
----
-
-# Architecture
-
-See:
-
-- AI_ARCHITECTURE.md
-- docs/diagrams/ai_architecture.png
+- RSS feed source synchronization
+- Ingestion metrics and visibility
+- Feed activation/deactivation
+- Last ingest timestamps
+- Error propagation to frontend
+- Offline-capable AI architecture
+- Service-layer organization
+- Dockerized PostgreSQL deployment
 
 ---
 
@@ -174,56 +74,156 @@ See:
 - FastAPI
 - SQLAlchemy ORM
 - Alembic
-
-## Database
-
 - PostgreSQL 16
-- TSVECTOR
-- GIN indexes
-- full-text search
+- Docker
 
-## AI / ML
+## Machine Learning & AI
 
 - scikit-learn
+- sentence-transformers
+- semantic embeddings
+- cosine similarity retrieval
 - TF-IDF vectorization
 - Naive Bayes classification
-- joblib model persistence
 
-## Infrastructure
+## Frontend
 
-- Docker Compose
-- PostgreSQL containers
-- REST API architecture
+- HTML
+- CSS
+- JavaScript
 
 ---
 
-# Quick Start
+# Architecture Overview
 
-## Clone repository
+SignalStack follows a modular service-layer architecture:
 
-```bash
-git clone <your-repo-url>
-cd signalstack
+RSS Feeds  
+→ Ingestion Pipeline  
+→ Article Cleaning & Enrichment  
+→ ML Classification  
+→ Semantic Embedding Generation  
+→ PostgreSQL Storage  
+→ Search / Retrieval APIs  
+→ Frontend Dashboard
+
+Core architectural goals:
+
+- offline-capable AI workflows
+- reusable service-layer logic
+- modular API endpoints
+- explainable retrieval systems
+- incremental platform evolution
+- lightweight deployment footprint
+
+---
+
+# Frontend Demo Dashboard
+
+SignalStack includes a lightweight frontend dashboard served directly by FastAPI.
+
+Frontend URL:
+
+`http://127.0.0.1:8000/demo`
+
+The dashboard supports:
+
+- viewing live platform statistics
+- triggering RSS ingestion
+- keyword article search
+- semantic embedding search
+- hybrid retrieval search
+- ML prediction testing
+- RSS feed operational visibility
+- related article lookup
+
+The frontend intentionally uses plain HTML, CSS, and JavaScript to keep the project lightweight and focused on backend engineering, AI retrieval systems, and operational workflows.
+
+## Dashboard Overview
+
+![SignalStack Dashboard](docs/screenshots/screenshot_01_stickyheader_dashboard.png)
+
+## Platform Status & Architecture
+
+![SignalStack About and Status](docs/screenshots/screenshot_02_about_status.png)
+
+---
+
+# API Examples
+
+## Articles
+
+GET `/api/v1/articles`
+
+GET `/api/v1/articles?search=ai`
+
+GET `/api/v1/articles?phrase_search=artificial intelligence`
+
+GET `/api/v1/articles?min_ml_confidence=0.70`
+
+## Semantic Search
+
+GET `/api/v1/articles/semantic-search?query=virus%20outbreak%20cruise%20ship`
+
+## Hybrid Search
+
+GET `/api/v1/articles/hybrid-search?query=virus%20outbreak%20cruise%20ship`
+
+## Related Articles
+
+GET `/api/v1/articles/{article_id}/similar`
+
+## Machine Learning
+
+POST `/api/v1/ml/predict`
+
+GET `/api/v1/ml/health`
+
+## RSS Feed Operations
+
+GET `/api/v1/rss-feeds`
+
+POST `/api/v1/rss-feeds/sync`
+
+POST `/api/v1/rss-feeds/ingest`
+
+## Dashboard
+
+GET `/api/v1/dashboard/stats`
+
+---
+
+# Example Dashboard Statistics
+
+- Total articles
+- Active RSS feeds
+- ML-classified articles
+- Embedded articles
+- Last article ingest timestamp
+- Last feed ingest timestamp
+
+---
+
+# Project Structure
+
+```text
+app/
+├── api/
+├── config/
+├── crud/
+├── db/
+├── ingestion/
+├── ml/
+├── models/
+├── schemas/
+├── services/
+├── static/
+└── utils/
 ```
 
-## Create virtual environment
+---
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-## Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-## Configure environment
-
-```bash
-cp .env.example .env
-```
+# Running SignalStack
 
 ## Start PostgreSQL
 
@@ -231,37 +231,25 @@ cp .env.example .env
 docker compose up -d
 ```
 
-## Run migrations
-
-```bash
-python -m alembic upgrade head
-```
-
-## Ingest articles
-
-```bash
-python -m app.ingestion.fetch_rss
-```
-
-## Train ML classifier
-
-```bash
-python -m app.ml.train_real_classifier
-```
-
-## Run AI enrichment
-
-```bash
-python -m app.ml.predict_real_articles
-```
-
-## Start API server
+## Run FastAPI
 
 ```bash
 python -m uvicorn app.main:app --reload
 ```
 
-## Open Swagger UI
+## Run RSS Ingestion
+
+```bash
+python -m app.ingestion.fetch_rss
+```
+
+## Open Frontend Dashboard
+
+```text
+http://127.0.0.1:8000/demo
+```
+
+## Open API Docs
 
 ```text
 http://127.0.0.1:8000/docs
@@ -269,86 +257,70 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# Example API Endpoints
+# AI Architecture Notes
 
-## Articles
+## Semantic Embeddings
 
-```text
-GET /api/v1/articles
-```
+SignalStack uses locally hosted sentence-transformer models for semantic embedding generation.
 
-## Search
+Embeddings are currently stored in PostgreSQL JSON columns for portability and development simplicity.
 
-```text
-GET /api/v1/articles?search=ai
-```
+Future upgrade path:
 
-## Phrase Search
+- pgvector integration
+- approximate nearest-neighbor retrieval
+- distributed embedding pipelines
 
-```text
-GET /api/v1/articles?phrase_search=artificial intelligence
-```
+## Hybrid Retrieval
 
-## Confidence Filtering
+Hybrid search combines:
 
-```text
-GET /api/v1/articles?min_ml_confidence=0.70
-```
+- PostgreSQL full-text ranking
+- semantic embedding similarity
+- weighted scoring strategies
 
-## ML Prediction
-
-```text
-POST /api/v1/ml/predict
-```
-
-Example payload:
-
-```json
-{
-  "text": "Artificial intelligence improves cybersecurity systems."
-}
-```
-
-## ML Health
-
-```text
-GET /api/v1/ml/health
-```
+to improve search relevance and contextual retrieval quality.
 
 ---
 
-# Current ML Limitations
+# Design Goals
 
-Current classifier limitations include:
-
-- small dataset size
-- weakly supervised bootstrap training labels
-- class imbalance
-- limited category diversity
-
-Future improvements may include:
-
-- embeddings
-- semantic similarity
-- transformer models
-- clustering
-- recommendation systems
-- vector databases
-- retraining pipelines
-- human-annotated datasets
+- lightweight deployment
+- explainable retrieval systems
+- offline-capable AI workflows
+- modular architecture
+- operational visibility
+- incremental engineering evolution
+- recruiter/demo friendliness
 
 ---
 
-# Production Engineering Concepts
+# Future Roadmap
 
-SignalStack demonstrates:
+- pgvector integration
+- ANN retrieval optimization
+- async ingestion workers
+- streaming ingestion pipelines
+- article summarization
+- entity extraction
+- topic modeling
+- authentication/admin controls
+- deployment automation
+- ingestion scheduling
+- frontend visual analytics
 
-- reusable inference service layers
-- persisted ML model artifacts
-- inference latency monitoring
-- AI subsystem health checks
-- hybrid search + ML retrieval
-- PostgreSQL AI enrichment persistence
-- confidence-aware filtering
-- API-first backend architecture
-- modular query-builder design
+---
+
+# Documentation
+
+Additional project documentation:
+
+- `DEMO.md`
+- `AI_ARCHITECTURE.md`
+- `docs/diagrams/ai_architecture.puml`
+
+---
+
+# License
+
+Portfolio and educational project.
